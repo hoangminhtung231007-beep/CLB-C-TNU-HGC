@@ -1,5 +1,12 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import fs from 'fs';
+
+function copyStaticFolder(src, dest) {
+  if (fs.existsSync(src)) {
+    fs.cpSync(src, dest, { recursive: true });
+  }
+}
 
 export default defineConfig({
   root: '.',
@@ -17,7 +24,17 @@ export default defineConfig({
       }
     }
   },
+  plugins: [
+    {
+      name: 'copy-components-and-assets',
+      closeBundle() {
+        copyStaticFolder(resolve(__dirname, 'components'), resolve(__dirname, 'dist/components'));
+        copyStaticFolder(resolve(__dirname, 'assets'), resolve(__dirname, 'dist/assets'));
+      }
+    }
+  ],
   server: {
     port: 3000
   }
 });
+
