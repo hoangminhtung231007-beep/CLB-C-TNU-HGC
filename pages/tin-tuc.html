@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tin Tức &amp; Sự Kiện | CLB Cờ TNU - HGC</title>
+  <meta name="description" content="Cập nhật tin tức, sự kiện và hoạt động mới nhất của CLB Cờ TNU - HGC tại Đại học Thái Nguyên phân hiệu Hà Giang.">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/tin-tuc.css">
+</head>
+<body>
+
+  <div class="ambient-bg">
+    <div class="glow-circle glow-blue"></div>
+    <div class="glow-circle glow-purple"></div>
+  </div>
+
+  <main class="app-container">
+    <div id="sidebar-container"></div>
+
+    <section class="blue-showcase-section" id="showcase-section">
+      <div id="page-tintuc" class="content-section" style="display: block;">
+        <div class="page-container">
+          <h1 class="page-title">TIN TỨC &amp; SỰ KIỆN</h1>
+
+          <!-- Hero news -->
+          <div class="news-hero-section" id="news-hero-target"></div>
+
+          <!-- Grid news -->
+          <div id="news-grid-target"
+               style="display:grid;
+                      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+                      gap:24px;
+                      margin-top:0;
+                      width:100%;
+                      box-sizing:border-box;"></div>
+
+        </div><!-- /.page-container -->
+      </div><!-- /#page-tintuc -->
+    </section>
+  </main>
+
+  <div id="modals-container"></div>
+  <script type="module" src="../js/core/initSupabase.js"></script>
+  <script type="module" src="../js/core/app.js"></script>
+  <script type="module" src="../js/pages/tin-tuc.js"></script>
+</body>
+</html>

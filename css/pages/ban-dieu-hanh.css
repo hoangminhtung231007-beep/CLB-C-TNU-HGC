@@ -1,0 +1,406 @@
+/* Global adjustments to remove the black line on right edge */
+html, body {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+}
+
+/* Transparent scrollbar track to prevent black stripe on the right edge */
+::-webkit-scrollbar-track,
+.page-container::-webkit-scrollbar-track,
+.app-container ::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+/* Reset any borders or outlines on main content area and prevent subpixel bleeding */
+.app-container {
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.blue-showcase-section {
+  flex-grow: 1 !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border-right: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.content-section,
+.main-section,
+.page-container {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border-right: none !important; /* Xóa bỏ mọi border-right/border gây vạch đen */
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#page-bandieuhanh .page-container,
+#ban-dieu-hanh-section .page-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 40px !important;
+  align-items: center !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+  border-right: none !important;
+}
+
+#executive-org-chart {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin-top: 0 !important;
+  box-sizing: border-box !important;
+  border-right: none !important;
+}
+
+.org-tier {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+  border-right: none !important;
+  pointer-events: none !important; /* Click xuyên qua khoảng trống giữa các tầng */
+}
+
+/* Tầng 1: Đỉnh - Chủ nhiệm (1 card, to hơn 1.2 lần, viền sáng vàng) */
+.tier-1 {
+  z-index: 10 !important;
+  position: relative !important;
+  width: fit-content !important; /* Thu gọn chiều rộng để không đè lên 2 bên */
+  max-width: 350px !important;
+  margin: 0 auto !important;
+}
+
+#executive-tier-1-container {
+  display: flex !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  width: fit-content !important;
+  margin: 0 auto !important;
+  pointer-events: none !important;
+}
+
+.tier-1 .executive-card {
+  width: 288px !important; /* 240px * 1.2 */
+  min-height: 372px !important; /* 310px * 1.2 */
+  padding: 28.8px !important; /* 24px * 1.2 */
+  border-color: rgba(250, 204, 21, 0.3) !important;
+  box-shadow: 0 0 25px rgba(250, 204, 21, 0.25), 0 12px 30px rgba(0, 0, 0, 0.5) !important;
+  position: relative !important;
+  z-index: 10 !important; /* Ensure it is on top */
+  pointer-events: auto !important; /* Nhận click bình thường */
+}
+
+.tier-1 .executive-card:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(250, 204, 21, 0.6) !important;
+  box-shadow: 0 0 35px rgba(250, 204, 21, 0.45), 0 20px 40px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Tầng 2: Giữa - Phó Chủ nhiệm (2 cards, kéo lên xếp lớp dưới Chủ nhiệm) */
+.tier-2 {
+  margin-top: -300px !important; /* Đẩy 2 thẻ Phó Chủ nhiệm lên cao thêm 2cm sát avatar Chủ nhiệm */
+  position: relative !important;
+  z-index: 50 !important; /* Đặt Z-index đủ lớn để khối này hoàn toàn nổi lên trên lớp vô hình của Chủ nhiệm */
+  pointer-events: none !important;
+}
+
+#executive-tier-2-container {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 480px !important; /* Dịch 2 thẻ PCN ra ngoài thêm 1cm mỗi bên, chừa khoảng trống cho Chủ nhiệm ở giữa */
+  flex-wrap: wrap !important;
+  width: 100% !important;
+  pointer-events: none !important;
+}
+
+/* Tầng 3: Đáy - Trưởng ban (4 cards, dàn ngang làm chân đế) */
+.tier-3 {
+  margin-top: 130px !important; /* Dịch cả cụm dưới lên 2cm cùng với hàng PCN */
+  z-index: 4 !important;
+  position: relative !important;
+  pointer-events: none !important;
+}
+
+#executive-tier-3-container {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 30px !important; /* Dàn ngang đều nhau */
+  flex-wrap: wrap !important;
+  width: 100% !important;
+  pointer-events: none !important;
+}
+
+/* Profile Card Styling: Glassmorphism */
+.executive-card {
+  position: relative !important;
+  background: rgba(10, 15, 30, 0.65) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  padding: 24px !important;
+  width: 240px !important;
+  min-height: 310px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  justify-content: flex-start !important;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s, box-shadow 0.3s, background 0.3s !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4) !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  pointer-events: auto !important; /* Bắt buộc nhận tương tác click */
+}
+
+/* Thẻ nổi lên khi hover và viền sáng lên */
+.executive-card:hover {
+  transform: translateY(-5px) !important;
+  background: rgba(255, 255, 255, 0.09) !important;
+  border-color: rgba(100, 255, 218, 0.5) !important;
+  box-shadow: 0 15px 30px rgba(100, 255, 218, 0.2), 0 10px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Fix Avatar tròn và ngăn lỗi vỡ ảnh */
+.executive-card .avatar-wrapper {
+  width: 120px !important;
+  height: 120px !important;
+  margin: 0 auto 16px auto !important;
+  display: block !important;
+}
+
+.executive-card .avatar-wrapper img {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  margin: 0 auto !important;
+  display: block !important;
+  transition: transform 0.3s ease !important;
+}
+
+/* Tier 1 Avatar (1.2 times larger: 144px) */
+.tier-1 .executive-card .avatar-wrapper {
+  width: 144px !important;
+  height: 144px !important;
+}
+
+.tier-1 .executive-card .avatar-wrapper img {
+  width: 144px !important;
+  height: 144px !important;
+}
+
+.executive-card:hover .avatar-wrapper img {
+  transform: scale(1.05) !important;
+}
+
+/* Tên thành viên (In đậm) và Chức vụ */
+.executive-card .executive-info {
+  position: relative !important;
+  z-index: 10 !important;
+  pointer-events: auto !important;
+  width: 100% !important;
+}
+
+.executive-card .executive-info h3 {
+  font-size: 18px !important;
+  font-weight: 700 !important; /* Chữ in đậm */
+  color: #ffffff !important;
+  margin: 12px 0 6px 0 !important;
+  line-height: 1.2 !important;
+}
+
+.tier-1 .executive-card .executive-info h3 {
+  font-size: 21.6px !important; /* 1.2 times larger */
+}
+
+.executive-card .executive-info p {
+  margin: 4px 0 0 0 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.tier-1 .executive-card .executive-info p {
+  font-size: 15.6px !important; /* 1.2 times larger */
+}
+
+.executive-card .executive-info a {
+  color: #64ffda !important;
+  text-decoration: none !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-top: 10px !important;
+  transition: color 0.2s !important;
+}
+
+.executive-card .executive-info a:hover {
+  color: #00d2ff !important;
+}
+
+/* Badge mini emblem positioned top-right */
+.executive-card .executive-badge-logo-only {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  width: 32px !important;
+  height: 32px !important;
+  z-index: 5 !important;
+}
+
+.executive-card .executive-badge-logo-only img {
+  width: 32px !important;
+  height: 32px !important;
+  object-fit: contain !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) !important;
+  pointer-events: none !important;
+}
+
+.tier-1 .executive-card .executive-badge-logo-only {
+  top: 14.4px !important;
+  right: 14.4px !important;
+  width: 38.4px !important;
+  height: 38.4px !important;
+}
+
+.tier-1 .executive-card .executive-badge-logo-only img {
+  width: 38.4px !important;
+  height: 38.4px !important;
+}
+
+/* Alumni section styling */
+.alumni-section {
+  width: 100% !important;
+  margin-top: 60px !important;
+  text-align: center !important;
+}
+
+.alumni-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 20px !important;
+  margin-top: 30px !important;
+}
+
+#page-bandieuhanh .page-title,
+#ban-dieu-hanh-section .page-title {
+  width: 100% !important;
+}
+
+/* Styling for dynamically loaded members */
+#active-management-container, #retro-management-container {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 20px !important;
+  margin-top: 30px !important;
+  width: 100% !important;
+}
+
+.member-card {
+  position: relative !important;
+  background: rgba(10, 15, 30, 0.65) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  padding: 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  justify-content: flex-start !important;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s, box-shadow 0.3s, background 0.3s !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4) !important;
+  box-sizing: border-box !important;
+}
+
+.member-card:hover {
+  transform: translateY(-5px) !important;
+  background: rgba(255, 255, 255, 0.09) !important;
+  border-color: rgba(100, 255, 218, 0.5) !important;
+  box-shadow: 0 15px 30px rgba(100, 255, 218, 0.2), 0 10px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+.member-card img {
+  width: 100px !important;
+  height: 100px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 2px solid #00d2ff !important;
+  margin-bottom: 16px !important;
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.2) !important;
+}
+
+.member-card h3 {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin: 12px 0 6px 0 !important;
+  line-height: 1.2 !important;
+}
+
+.member-card p.title {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #64ffda !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  margin: 4px 0 0 0 !important;
+}
+
+.member-card p.mssv {
+  font-size: 12px !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  margin: 6px 0 0 0 !important;
+}
+
+/* Retro styling */
+.member-card.retro img {
+  border-color: #a29bfe !important;
+  box-shadow: 0 0 12px rgba(162, 155, 254, 0.2) !important;
+}
+.member-card.retro p.title {
+  color: #a29bfe !important;
+}
+
+/* Executive Board Responsive Views */
+@media (min-width: 769px) {
+  .executive-desktop-view {
+    display: flex !important;
+  }
+  .executive-mobile-view {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .executive-desktop-view {
+    display: none !important;
+  }
+  .executive-mobile-view {
+    display: grid !important;
+  }
+}

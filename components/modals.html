@@ -1,0 +1,353 @@
+<!-- Modal/Toast for interactions feedback (Register / Join) -->
+<div class="notification-toast" id="toast"></div>
+
+<!-- ===== MODAL: ĐĂNG NHẬP ===== -->
+<div id="modal-login" class="modal-overlay hidden">
+  <div class="modal-content" style="max-width: 400px; text-align: left;">
+    <div class="modal-icon" style="text-align: center;">🔐</div>
+    <h2 class="modal-title" style="text-align: center; margin-bottom: 20px;">ĐĂNG NHẬP</h2>
+
+    <!-- Form: Đăng nhập -->
+    <div class="login-form">
+      <label for="login-mssv" style="color: rgba(255,255,255,0.7); font-size: 13px; display: block; margin-bottom: 5px;">MSSV (Mã sinh viên):</label>
+      <input type="text" placeholder="Nhập mã sinh viên của bạn..." class="input-field" id="login-mssv" style="margin-bottom: 15px; width: 100%; box-sizing: border-box;">
+      
+      <label for="login-password" style="color: rgba(255,255,255,0.7); font-size: 13px; display: block; margin-bottom: 5px;">Mật khẩu:</label>
+      <input type="password" placeholder="Mật khẩu" class="input-field" id="login-password" style="margin-bottom: 20px; width: 100%; box-sizing: border-box;">
+      
+      <button class="btn-submit" onclick="handleLogin(event)" style="width: 100%; box-sizing: border-box; margin-bottom: 10px;">Đăng Nhập</button>
+    </div>
+
+    <button type="button" class="btn-close" style="width: 100%; border: 1px solid rgba(255, 255, 255, 0.15); background: transparent; cursor: pointer; color: #fff; padding: 12px; border-radius: 8px;" onclick="closeModal('modal-login')">Đóng</button>
+  </div>
+</div>
+
+<!-- ===== MODAL: ĐĂNG KÝ ===== -->
+<div id="modal-register" class="modal-overlay hidden">
+  <div class="modal-content wide-modal" style="max-width: 720px; width: 720px; max-width: 92vw; text-align: left; position: relative; padding: 32px;">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 6px;">
+      <span style="font-size: 28px;">📝</span>
+      <h2 class="modal-title" style="margin: 0; font-size: 22px;">ĐĂNG KÝ THAM GIA</h2>
+    </div>
+    <p class="modal-subtitle" style="text-align: center; margin-bottom: 24px; color: rgba(255,255,255,0.6); font-size: 13.5px;">Gia nhập TNU - HGC Chess Club</p>
+
+    <!-- 1. Form Đăng ký -->
+    <form id="registration-form" action="https://api.web3forms.com/submit" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
+      
+      <!-- Hidden Inputs cho Web3Forms -->
+      <input type="hidden" name="access_key" value="a488ee54-5340-4090-8148-a4d75cb3e297">
+      <input type="hidden" name="subject" value="Có đơn xin gia nhập CLB mới!">
+
+      <!-- Grid 2 Cột Rộng Rãi -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <!-- Cột 1: Thông tin cá nhân -->
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div>
+            <label for="reg-ho-ten" style="color: rgba(255,255,255,0.85); font-size: 13px; display: block; margin-bottom: 6px; font-weight: 500;">
+              Họ và Tên <span style="color: #ff4d4f;">*</span>:
+            </label>
+            <input type="text" id="reg-ho-ten" name="Ho_Ten" placeholder="Nhập họ và tên..." class="input-field" required style="width: 100%; box-sizing: border-box; padding: 11px 14px;">
+          </div>
+
+          <div>
+            <label for="reg-mssv" style="color: rgba(255,255,255,0.85); font-size: 13px; display: block; margin-bottom: 6px; font-weight: 500;">
+              MSSV (Mã sinh viên):
+            </label>
+            <input type="text" id="reg-mssv" name="MSSV" placeholder="Nhập mã sinh viên (nếu có)..." class="input-field" style="width: 100%; box-sizing: border-box; padding: 11px 14px;">
+          </div>
+
+          <div>
+            <label for="reg-sdt" style="color: rgba(255,255,255,0.85); font-size: 13px; display: block; margin-bottom: 6px; font-weight: 500;">
+              Số điện thoại (Zalo) <span style="color: #ff4d4f;">*</span>:
+            </label>
+            <input type="tel" id="reg-sdt" name="So_Dien_Thoai_Zalo" placeholder="Ví dụ: 0987654321" class="input-field" required style="width: 100%; box-sizing: border-box; padding: 11px 14px;">
+          </div>
+        </div>
+
+        <!-- Cột 2: Ghi chú / Trình độ cờ -->
+        <div style="display: flex; flex-direction: column;">
+          <label for="reg-kinh-nghiem" style="color: rgba(255,255,255,0.85); font-size: 13px; display: block; margin-bottom: 6px; font-weight: 500;">
+            Ghi chú / Trình độ cờ:
+          </label>
+          <textarea id="reg-kinh-nghiem" name="Trinh_Do_Va_Ghi_Chu" placeholder="Giới thiệu về trình độ chơi cờ (Mới chơi, Đã chơi lâu,...) hoặc ghi chú thêm..." class="input-field" style="width: 100%; flex: 1; min-height: 160px; box-sizing: border-box; resize: none; font-family: inherit; background: rgba(255, 255, 255, 0.06); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 12px 16px; outline: none;"></textarea>
+        </div>
+      </div>
+
+      <!-- Nút bấm đặt nằm ngang bên phải -->
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; width: 100%;">
+        <button type="button" class="btn-close" style="width: auto; padding: 12px 28px; border: 1px solid rgba(255, 255, 255, 0.15); background: transparent; cursor: pointer; color: #fff; border-radius: 10px; font-weight: 600; text-align: center;" onclick="closeModal('modal-register')">Hủy</button>
+        <button type="submit" id="btn-register-submit" class="btn-submit" style="width: auto; padding: 12px 32px; background: #0055ff; color: white; font-weight: bold; cursor: pointer; border-radius: 10px; display: flex; align-items: center; justify-content: center; text-align: center;">Gửi Đăng Ký</button>
+      </div>
+
+    </form>
+
+    <!-- 2. Giao diện Thành công & CTA Link Zalo -->
+    <div id="registration-success" style="display: none; text-align: center; padding: 10px 0;">
+      <div style="font-size: 54px; margin-bottom: 14px;">🎉</div>
+      <h3 style="color: #64ffda; font-size: 19px; font-weight: 700; margin-bottom: 12px; line-height: 1.4;">
+        🎉 Đăng ký thành công! Chào mừng bạn đến với TNU - HGC Chess Club.
+      </h3>
+      <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px; margin-bottom: 24px; line-height: 1.5;">
+        Vui lòng bấm vào nút bên dưới để tham gia ngay nhóm Zalo CLB và cập nhật thông tin mới nhất!
+      </p>
+
+      <!-- Nút CTA lớn nổi bật (Màu xanh Zalo) -->
+      <a href="https://zalo.me/g/ugejmj655" target="_blank" class="btn-zalo-cta" style="margin-bottom: 14px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12C2 13.85 2.5 15.58 3.37 17.07L2.05 21.03L6.15 19.78C7.59 20.56 9.24 21 12 21C17.52 21 22 16.52 22 12C22 6.48 17.52 2 12 2ZM12 19C9.72 19 7.64 18.25 5.97 16.99L5.68 16.77L3.62 17.4L4.27 15.42L4.02 15.11C2.74 13.43 2 11.35 2 9C2 4.58 6.48 1 12 1C17.52 1 22 4.58 22 9C22 13.42 17.52 19 12 19Z"/>
+        </svg>
+        <span>Tham gia ngay Nhóm Zalo CLB</span>
+      </a>
+
+      <button type="button" class="btn-close" onclick="closeModal('modal-register')" style="width: 100%; border: 1px solid rgba(255, 255, 255, 0.15); background: transparent; cursor: pointer; color: rgba(255, 255, 255, 0.7); padding: 12px; border-radius: 8px; font-size: 14px; margin: 0;">
+        Đóng
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== MODAL: QUY TRÌNH XÉT DUYỆT ===== -->
+<div id="modal-process-notification" class="modal-overlay" style="display: none;">
+  <div class="modal-content" style="max-width: 480px; text-align: left;">
+    <div class="modal-icon" style="text-align: center;">📋</div>
+    <h2 class="modal-title" style="text-align: center; margin-bottom: 15px;">QUY TRÌNH XÉT DUYỆT</h2>
+    <p class="modal-subtitle" style="text-align: center; margin-bottom: 20px;">Các bước xử lý hồ sơ đăng ký thành viên của bạn</p>
+    
+    <div class="process-steps" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+      <div class="process-step" style="display: flex; gap: 12px; align-items: flex-start; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid #0055ff;">
+        <span style="font-size: 20px; line-height: 1;">📝</span>
+        <div>
+          <h4 style="margin: 0 0 4px; color: #fff; font-size: 14px;">Tiếp nhận thông tin đăng ký</h4>
+          <p style="margin: 0; font-size: 12px; color: rgba(255,255,255,0.6);">Hệ thống đã ghi nhận hồ sơ đăng ký thành viên của bạn.</p>
+        </div>
+      </div>
+      
+      <div class="process-step" style="display: flex; gap: 12px; align-items: flex-start; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid #00d2ff;">
+        <span style="font-size: 20px; line-height: 1;">🔍</span>
+        <div>
+          <h4 style="margin: 0 0 4px; color: #fff; font-size: 14px;">Rà soát, kiểm tra thông tin</h4>
+          <p style="margin: 0; font-size: 12px; color: rgba(255,255,255,0.6);">Ban chuyên môn sẽ tiến hành kiểm tra và rà soát thông tin hồ sơ.</p>
+        </div>
+      </div>
+      
+      <div class="process-step" style="display: flex; gap: 12px; align-items: flex-start; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid #e74c3c;">
+        <span style="font-size: 20px; line-height: 1;">📞</span>
+        <div>
+          <h4 style="margin: 0 0 4px; color: #fff; font-size: 14px;">Liên hệ</h4>
+          <p style="margin: 0; font-size: 12px; color: rgba(255,255,255,0.6);">Liên hệ trong thời gian sớm nhất.</p>
+        </div>
+      </div>
+      
+      <div class="process-step" style="display: flex; gap: 12px; align-items: flex-start; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid #2ecc71;">
+        <span style="font-size: 20px; line-height: 1;">🎉</span>
+        <div>
+          <h4 style="margin: 0 0 4px; color: #fff; font-size: 14px;">Phê duyệt & cấp tài khoản</h4>
+          <p style="margin: 0; font-size: 12px; color: rgba(255,255,255,0.6);">Chính thức phê duyệt và cấp tài khoản thành viên CLB.</p>
+        </div>
+      </div>
+    </div>
+    
+    <button class="btn-submit" onclick="closeModal('modal-process-notification')" style="background: #0055ff; font-weight: bold; width: 100%;">Xác nhận</button>
+  </div>
+</div>
+
+
+
+<!-- ===== MODAL: CHỈNH SỬA HỒ SƠ ===== -->
+<div id="modal-edit-profile" class="modal-overlay" style="display: none;">
+  <div class="modal-content" style="max-width: 450px; text-align: left;">
+    <div class="modal-icon" style="text-align: center;">🖼️</div>
+    <h2 class="modal-title" style="text-align: center; margin-bottom: 15px;">CẬP NHẬT ẢNH ĐẠI DIỆN</h2>
+    <p class="modal-subtitle" style="text-align: center; margin-bottom: 20px;">Chọn một hình ảnh mới làm ảnh đại diện của bạn</p>
+    
+    <label style="color: #00d2ff; font-size: 14px; text-align: left; display: block; margin-bottom: 5px;">Chọn file ảnh:</label>
+    <input type="file" id="edit-profile-avatar" accept="image/*" class="input-field" style="padding: 9px; cursor: pointer; margin-bottom: 20px; width: 100%; box-sizing: border-box;">
+    
+    <button class="btn-submit" onclick="saveProfileInfo()" style="background: #0055ff; font-weight: bold; width: 100%;">Lưu Thay Đổi</button>
+    <button class="btn-close" onclick="closeModal('modal-edit-profile')">Hủy</button>
+  </div>
+</div>
+
+<!-- ===== MODAL: GÓP Ý ===== -->
+<div id="modal-feedback" class="modal-overlay" style="display: none;">
+  <div class="modal-content" style="max-width: 450px; text-align: left;">
+    <div class="modal-icon" style="text-align: center;">💬</div>
+    <h2 class="modal-title" style="text-align: center; margin-bottom: 15px;">GỬI Ý KIẾN GÓP Ý</h2>
+    <p class="modal-subtitle" style="text-align: center; margin-bottom: 20px;">Chúng tôi luôn lắng nghe ý kiến đóng góp từ thành viên</p>
+    
+    <form action="https://api.web3forms.com/submit" method="POST" id="formGopY" onsubmit="handleFeedbackSubmit(event)">
+      <input type="hidden" name="access_key" value="a488ee54-5340-4090-8148-a4d75cb3e297">
+      <input type="hidden" name="subject" value="Ý kiến đóng góp từ Thành viên">
+      <input type="hidden" name="Người gửi" id="gopy_hoten">
+      <input type="hidden" name="MSSV" id="gopy_mssv">
+
+      <label style="color: #64ffda; font-size: 14px; text-align: left; display: block; margin-bottom: 5px;">Nội dung góp ý:</label>
+      <textarea id="feedback-text" name="message" class="input-field" rows="5" placeholder="Nhập ý kiến của bạn ở đây..." style="width: 100%; box-sizing: border-box; resize: vertical; min-height: 120px; font-family: var(--font-sans); margin-bottom: 20px; background: rgba(255, 255, 255, 0.06); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 12px 16px; outline: none;" required></textarea>
+      
+      <button type="submit" id="btn-submit-feedback" class="btn-submit" style="background: linear-gradient(90deg, #64ffda, #00f2fe); color: #06070a; font-weight: bold; width: 100%; border: none; border-radius: 12px; padding: 13px; cursor: pointer; font-size: 14px; letter-spacing: 0.06em; box-shadow: 0 4px 20px rgba(100, 255, 218, 0.3); transition: all 0.3s;">Gửi Ý Kiến</button>
+    </form>
+    <button class="btn-close" onclick="closeModal('modal-feedback')" style="background: transparent; border: none; color: rgba(255,255,255,0.4); width: 100%; padding: 10px; cursor: pointer; margin-top: 5px;">Hủy</button>
+  </div>
+</div>
+
+<!-- ===== MODAL: PHÓNG TO MÃ QR ===== -->
+<div id="modal-qr-zoom" class="modal-overlay" style="display: none;" onclick="closeModal('modal-qr-zoom')">
+  <div class="modal-content" style="max-width: 320px; padding: 25px; display: flex; flex-direction: column; align-items: center; background: rgba(11, 12, 16, 0.95); border: 1px solid rgba(100, 255, 218, 0.3); border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);" onclick="event.stopPropagation()">
+    <img id="qr-zoom-img" src="" alt="Mã QR Phóng To" style="width: 250px; height: 250px; border-radius: 10px; border: 3px solid #64ffda; box-shadow: 0 0 15px rgba(100, 255, 218, 0.3); object-fit: contain; margin-bottom: 15px;">
+    <span style="color: #64ffda; font-weight: bold; font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; text-align: center;">Mã QR Điểm Danh</span>
+    <button class="btn-close" onclick="closeModal('modal-qr-zoom')" style="background: transparent; border: none; color: rgba(255,255,255,0.4); cursor: pointer; margin-top: 15px;">Đóng</button>
+  </div>
+</div>
+
+
+<!-- ===== MODAL: CHI TIẾT HỒ SƠ THÀNH VIÊN ===== -->
+<div id="modal-member-detail" class="modal-overlay" style="display: none;" onclick="dongModalHoSo()">
+  <div class="modal-content digital-id-card" onclick="event.stopPropagation()" style="padding: 0; position: relative;">
+    
+    <!-- Dòng chữ ĐÃ ĐIỂM DANH! -->
+    <div id="badgeDiemDanh" class="hidden w-full text-center pt-4 mb-2">
+        <span class="inline-block px-8 py-2.5 bg-gradient-to-r from-emerald-950/90 via-green-900/90 to-teal-950/90 border-2 border-emerald-400 rounded-full text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-emerald-200 to-teal-300 uppercase tracking-widest shadow-[0_0_25px_rgba(16,185,129,0.6)] drop-shadow-[0_2px_10px_rgba(52,211,153,0.5)]">
+            ĐÃ ĐIỂM DANH!
+        </span>
+    </div>
+
+    <!-- Cover Image (Ảnh bìa) -->
+    <div class="digital-id-cover">
+      <!-- Nút đóng nhỏ gọn ở góc trên cùng bên phải -->
+      <button onclick="dongModalHoSo()" class="digital-id-logout-btn" style="color: rgba(255,255,255,0.6) !important; border-color: rgba(255,255,255,0.2) !important;">
+        Đóng
+      </button>
+    </div>
+
+    <div class="digital-id-body" style="padding: 0 !important;">
+      <div class="digital-id-body-grid">
+        
+        <!-- Cột trái: Khu vực Tuyển thủ -->
+        <div class="digital-id-left-col">
+          <!-- Avatar: Chồng lấp đè lên phần ảnh bìa (margin-top: -60px) -->
+          <div class="digital-id-avatar-wrap">
+            <img id="detail-member-avatar" src="" alt="Avatar" />
+          </div>
+
+          <!-- Tên và ID -->
+          <h2 class="digital-id-name"><span id="detail-member-name">Name</span></h2>
+          <p id="detail-member-mssv" class="digital-id-sub">MSSV</p>
+
+          <!-- Danh hiệu chuyển sang cột trái -->
+          <div id="detail-member-badge" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+            <img id="detail-member-badge-img" src="../assets/badges/bac1.png" style="width: 160px !important; height: 160px !important; max-width: none !important; object-fit: contain; filter: drop-shadow(0 0 15px rgba(255,255,255,0.35));" alt="Huy hiệu">
+            <span id="detail-member-badge-text" style="color: #facc15; font-size: 16px; font-weight: bold; margin-top: 8px; display: block; text-align: center;">Bậc 1: Thành viên mới</span>
+          </div>
+        </div>
+
+        <!-- Cột phải: Khu vực Chỉ số & Xếp hạng -->
+        <div class="digital-id-right-col">
+          <!-- Khối Thống kê nổi bật (Stats Section) -->
+          <div class="digital-id-stats">
+            <div class="digital-id-stat-box sh">
+              <span>Sinh hoạt</span>
+              <strong id="detail-member-sinhhoat">00</strong>
+            </div>
+            <div class="digital-id-stat-box gd">
+              <span>Giải đấu</span>
+              <strong id="detail-member-giaidau">00</strong>
+            </div>
+            <div class="digital-id-stat-box hd">
+              <span>Hoạt động</span>
+              <strong id="detail-member-hoatdong">00</strong>
+            </div>
+          </div>
+
+          <!-- Bảng Thông tin Cá nhân (Details Grid) ở dưới stats -->
+          <div class="digital-id-details">
+            <div class="digital-id-detail-item">
+              <span>Khóa / Lớp</span>
+              <div id="detail-member-class"></div>
+            </div>
+            <div class="digital-id-detail-item">
+              <span>Giới tính</span>
+              <div id="detail-member-gender"></div>
+            </div>
+
+            <div class="digital-id-detail-item">
+              <span>Ngày tham gia</span>
+              <div id="detail-member-joindate"></div>
+            </div>
+            <div class="digital-id-detail-item">
+              <span>Xếp hạng</span>
+              <div id="detail-member-rank" style="font-size: 24px !important; font-weight: 800 !important; color: #facc15 !important; margin-top: 2px !important;">#--</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Nút OK cho Điểm danh -->
+    <div id="btnOkDiemDanh" class="hidden w-full flex justify-center pb-6 mt-4">
+        <button onclick="dongModalHoSo()" class="px-16 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white rounded-full font-bold text-xl shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all">OK</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== MODAL: XEM CHI TIẾT TIN TỨC ===== -->
+<div id="modal-news-detail" class="modal-overlay" style="display: none;">
+  <div class="modal-content wide-modal" style="max-width: 800px; width: 100%; max-height: 85vh; overflow-y: auto; text-align: left; background: #0f172a; border: 1px solid rgba(0, 210, 255, 0.3); box-shadow: 0 0 40px rgba(0, 210, 255, 0.2); position: relative; padding: 30px;">
+    <button class="btn-close" style="position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 16px;" onclick="closeModal('modal-news-detail')">✕</button>
+    <div id="news-detail-content" style="padding: 10px 5px;">
+      <h2 id="news-detail-title" style="color: #00d2ff; font-size: 24px; margin-top: 0; margin-bottom: 12px; font-weight: bold; line-height: 1.4;">...</h2>
+      <div style="display: flex; gap: 20px; color: rgba(255,255,255,0.6); font-size: 13px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
+        <span>✍️ Tác giả: <strong id="news-detail-author" style="color: #64ffda;">...</strong></span>
+        <span>📅 Ngày đăng: <strong id="news-detail-date" style="color: #fff;">...</strong></span>
+      </div>
+      <div style="margin-bottom: 20px; text-align: center;">
+        <img id="news-detail-image" src="" alt="Cover" style="max-width: 100%; max-height: 400px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15);">
+      </div>
+      <div id="news-detail-body" style="font-size: 16px; line-height: 1.8; color: #e2e8f0; white-space: pre-wrap;">
+        ...
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: CHÚC MỪNG THĂNG CẤP DANH HIỆU ===== -->
+<div id="popupThangCap" class="modal-overlay hidden" style="display: none; z-index: 10000;" onclick="dongPopupThangCap()">
+  <div class="modal-content rank-up-modal" onclick="event.stopPropagation()" style="max-width: 460px; width: 90vw; text-align: center; position: relative; padding: 35px 25px; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%); border: 2px solid #facc15; box-shadow: 0 0 50px rgba(250, 204, 21, 0.4); border-radius: 20px; overflow: hidden;">
+    
+    <!-- Background Glow Effect -->
+    <div style="position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 250px; height: 250px; background: radial-gradient(circle, rgba(250,204,21,0.25) 0%, transparent 70%); pointer-events: none; border-radius: 50%;"></div>
+    
+    <h2 style="color: #facc15; font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin: 10px 0 10px; text-shadow: 0 0 15px rgba(250, 204, 21, 0.6);">
+      CHÚC MỪNG THĂNG CẤP!
+    </h2>
+    
+    <p style="color: #e2e8f0; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">
+      Xin chúc mừng bạn đã xuất sắc đạt được danh hiệu mới trong CLB!
+    </p>
+
+    <!-- Khung hiển thị Huy hiệu Danh hiệu mới (Phóng to huy hiệu hoành tráng che bớt khoảng trống) -->
+    <div style="position: relative; display: flex; justify-content: center; align-items: center; margin: 10px 0 20px; min-height: 240px;">
+      <!-- Aura sáng tỏa đằng sau -->
+      <div style="position: absolute; width: 220px; height: 220px; background: radial-gradient(circle, rgba(250, 204, 21, 0.35) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+      <img id="imgDanhHieuMoi" src="./assets/badges/bac1.png" alt="Danh hiệu mới" style="width: 240px; height: 240px; max-width: 80vw; max-height: 240px; object-fit: contain; filter: drop-shadow(0 0 30px rgba(250, 204, 21, 0.85)); display: block; position: relative; z-index: 1; transform: scale(1.05);">
+    </div>
+
+    <!-- Tên danh hiệu mới -->
+    <div style="background: rgba(250, 204, 21, 0.1); border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 12px; padding: 14px 20px; margin-bottom: 25px;">
+      <span style="display: block; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Danh hiệu mới nhận</span>
+      <h3 id="tenDanhHieuMoi" style="color: #facc15; font-size: 22px; font-weight: 800; margin: 4px 0 0; text-shadow: 0 0 10px rgba(250,204,21,0.5);">
+        Thành viên mới
+      </h3>
+    </div>
+
+    <!-- Nút xác nhận nhận phần thưởng / Đóng (Xóa icon trước nút, chữ dễ nhìn) -->
+    <button id="btnDongPopupThangCap" onclick="dongPopupThangCap()" style="width: 100%; padding: 15px 20px; background: linear-gradient(90deg, #facc15, #f59e0b); color: #0f172a; font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 20px rgba(250, 204, 21, 0.4); transition: all 0.3s ease;">
+      Nhận Danh Hiệu & Tiếp Tục
+    </button>
+  </div>
+</div>
+
+
+

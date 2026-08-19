@@ -1,0 +1,497 @@
+/* QR Scanner Styles */
+.scanner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px auto 0 auto;
+  width: 100%;
+}
+.scanner-result {
+  background: rgba(100, 255, 218, 0.1);
+  border: 1px solid #64ffda;
+  border-radius: 12px;
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+  margin: 20px auto 0 auto;
+}
+.success-icon {
+  font-size: 40px;
+  color: #64ffda;
+  margin-bottom: 15px;
+}
+#qr-reader {
+  margin: 0 auto !important;
+}
+#qr-reader button {
+  background: #64ffda;
+  color: #0a192f;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px auto !important;
+  transition: all 0.3s;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+#qr-reader button:hover {
+  background: #4cd1b0;
+}
+
+/* === Admin member table adjustments === */
+#bangThanhVienAdmin tr,
+#admin-member-table-body tr,
+#admin-retro-table-body tr {
+    height: auto !important;
+    min-height: 0 !important;
+}
+#bangThanhVienAdmin td,
+#admin-member-table-body td,
+#admin-retro-table-body td {
+    padding: 10px 15px !important;
+    vertical-align: middle !important;
+}
+
+#bangThanhVienAdmin td.player-info-cell,
+#admin-member-table-body td.player-info-cell,
+#admin-retro-table-body td.player-info-cell,
+#bangThanhVienAdmin td.player-info,
+#admin-member-table-body td.player-info,
+#admin-retro-table-body td.player-info {
+    display: table-cell !important;
+    vertical-align: middle !important;
+}
+
+#bangThanhVienAdmin .player-info,
+#admin-member-table-body .player-info,
+#admin-retro-table-body .player-info {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    text-align: left !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-bottom: none !important;
+}
+
+#admin-member-table-body .player-info img,
+#admin-retro-table-body .player-info img {
+    width: 32px !important;
+    height: 32px !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+    border: 1.5px solid #64ffda !important;
+    object-fit: cover !important;
+    flex-shrink: 0 !important;
+}
+
+#admin-member-table-body .player-info span,
+#admin-retro-table-body .player-info span {
+    margin: 0 !important;
+    font-weight: 500 !important;
+}
+
+#admin-member-table-body .badge-icon-small,
+#admin-retro-table-body .badge-icon-small {
+    width: 36px !important;
+    height: 36px !important;
+    margin: 0 !important;
+    vertical-align: middle !important;
+}
+
+
+/* 1. ĐỔI KHUNG LOGO THÀNH HÌNH TRÒN CÂN ĐỐI */
+/* Sidebar logo placeholder styling deleted */
+
+/* Tái thiết kế trang Ban điều hành dưới dạng Sơ đồ hình tháp */
+#executive-org-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    padding: 20px 0;
+}
+
+#executive-org-chart .tier-1 {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    pointer-events: none !important; /* Cho phép sự kiện click xuyên qua khoảng trống */
+}
+
+#executive-tier-1-container {
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    pointer-events: none !important;
+}
+
+#executive-org-chart .tier-2 {
+    margin-top: -418px !important; /* Dịch hàng Tầng 2 lên 0.6cm */
+    position: relative;
+    z-index: 15 !important; /* Đặt Tầng 2 lên lớp trên cùng để không bị Tầng 1 đè phủ */
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    pointer-events: none !important;
+}
+
+#executive-tier-2-container {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 360px !important; /* Dàn 2 khối thẻ Phó Chủ nhiệm dạt hẳn sang hai bên, chừa khoảng trống ở giữa cho thẻ Chủ nhiệm */
+    flex-wrap: wrap !important;
+    width: 100%;
+    pointer-events: none !important;
+}
+
+#executive-org-chart .tier-3 {
+    margin-top: 40px !important; /* Tạo khoảng cách dọc hợp lý để Tầng 3 không đè lên Tầng 2 */
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    pointer-events: none !important;
+}
+
+#executive-tier-3-container {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 24px !important; /* Dàn đều các Trưởng ban ở hàng dưới cùng */
+    flex-wrap: wrap !important;
+    width: 100%;
+    pointer-events: none !important;
+}
+
+.executive-card {
+    width: 280px !important;
+    min-height: 250px !important; /* Giảm min-height để viền thẻ co lên tự nhiên */
+    padding: 25px 25px 5px 25px !important; /* Thu nhỏ padding-bottom tối đa để kéo viền đáy lên */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px; /* Giảm gap giữa các phần tử để tối ưu không gian */
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    box-sizing: border-box;
+    pointer-events: auto !important; /* Bắt buộc nhận tương tác click */
+}
+
+.executive-card .avatar-wrapper img {
+    width: 90px !important;
+    height: 90px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    transition: all 0.3s ease !important;
+}
+
+.executive-card h3 {
+    margin: 0;
+    font-size: 18px !important;
+    color: #fff;
+    font-weight: 600;
+    font-family: 'Outfit', sans-serif;
+}
+
+.executive-card p {
+    margin: 4px 0 0;
+}
+
+.executive-card a {
+    color: #64ffda;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    font-size: 13px !important;
+}
+
+.executive-card a:hover {
+    color: #00d2ff !important;
+}
+
+.executive-card .executive-badge-logo-only img {
+    width: 220px !important;
+    height: 220px !important;
+    margin-top: -35px !important; /* Kéo logo xích lên sát với dòng số điện thoại */
+    object-fit: contain !important;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    transition: transform 0.3s ease !important;
+    pointer-events: none !important; /* Không cản trở tương tác click của các lớp bên dưới */
+}
+
+.executive-card:hover .executive-badge-logo-only img {
+    transform: scale(1.1);
+}
+
+@media (max-width: 900px) {
+    #executive-org-chart .tier-2 {
+        margin-top: 0 !important;
+    }
+    #executive-tier-2-container {
+        gap: 20px !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+    #executive-org-chart .tier-3 {
+        margin-top: 20px !important;
+    }
+    #executive-tier-3-container {
+        gap: 20px !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+}
+
+/* Tắt hiệu ứng di chuột cho tất cả khung/bảng trong Admin Portal */
+.admin-dashboard-container .glass-card,
+.admin-content-area .glass-card,
+.admin-tab-content .glass-card,
+#total-members-card,
+.glass-card.no-hover {
+  transition: none !important;
+}
+
+.admin-dashboard-container .glass-card:hover,
+.admin-content-area .glass-card:hover,
+.admin-tab-content .glass-card:hover,
+#total-members-card:hover,
+.glass-card.no-hover:hover {
+  transform: none !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: none !important;
+}
+
+/* Hiệu ứng di chuột và bấm dành riêng cho từng hàng thành viên / mục */
+.admin-table tbody tr {
+  transition: background-color 0.2s ease, transform 0.1s ease !important;
+  cursor: pointer;
+}
+
+.admin-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.admin-table tbody tr:active {
+  background-color: rgba(0, 85, 255, 0.2) !important;
+  transform: scale(0.995) !important;
+}
+
+/* =========================================
+   SIDEBAR MENU — Clean & Hover Effects
+   ========================================= */
+
+
+
+/* Giữ tương thích với .menu-list và .discipline-list cũ */
+.menu-list,
+.discipline-list,
+.admin-menu-list {
+    margin-top: 5px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 2px !important;
+}
+
+/* 3. ĐẢM BẢO CHÂN TRANG ĐƯỢC ĐẨY LÊN (NẾU CÓ CLASS CHÂN TRANG) */
+.sidebar-footer,
+.sidebar-info {
+    margin-top: auto; /* Tự động bám sát đáy một cách hợp lý */
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05); /* Vạch ngăn cách mờ cho sang trọng */
+}
+
+/* 4. Hiệu ứng chuyển Tab mượt mà (Giống trang Admin) */
+.main-section {
+    display: none; /* Ẩn các tab không hoạt động */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.main-section.active-tab {
+    display: block; /* Hoặc flex tùy khối */
+    animation: smoothFadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Keyframe chuẩn hóa độ mượt: Trượt từ dưới lên 15px và rõ dần */
+@keyframes smoothFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Layout chứa 2 khối nằm ngang */
+.rank-and-rating-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 50px !important; /* Thu hẹp nhẹ khoảng cách để số 12 xích lại gần logo hơn */
+    margin-top: calc(40px + 1cm) !important; /* Kéo cụm danh hiệu và xếp hạng lên trên 1cm */
+    margin-left: -60px !important; /* LỰC KÉO MẠNH SANG TRÁI */
+    padding-left: 0 !important;
+    width: auto !important;
+}
+
+/* Khối từng mục */
+.profile-rank-wrapper, .profile-rating-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tiêu đề chung cho cả Danh hiệu và Xếp hạng */
+.rank-title-text {
+    color: #64ffda;
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(100, 255, 218, 0.4);
+    white-space: nowrap !important; /* Ép chữ DANH HIỆU và XẾP HẠNG luôn nằm trên 1 dòng, tuyệt đối không được rớt dòng */
+}
+
+/* Dịch chữ Xếp hạng sang trái 1cm */
+.profile-rating-wrapper .rank-title-text {
+    position: relative;
+    left: -1cm;
+}
+
+/* Phóng to Logo bằng với ảnh đại diện */
+.profile-badge-icon {
+    width: 360px !important; 
+    height: 360px !important;
+    object-fit: contain;
+    margin-top: -15px !important; /* LỰC KÉO LOGO LÊN TRÊN SÁT CHỮ */
+    margin-bottom: -5cm !important; /* Kéo viền ngoài bên dưới lên 1cm (từ -4cm thành -5cm) */
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.6));
+    transition: transform 0.3s ease;
+    position: relative;
+    top: -2cm; /* Dịch logo lên trên 2cm */
+}
+
+/* Profile badge hover scale removed */
+
+/* Style cho con số Xếp hạng cực ngầu */
+.rating-number-display {
+    font-size: 100px !important; 
+    font-weight: 900;
+    color: #ffd700;
+    line-height: 1;
+    text-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    margin-top: 40px !important; /* Kéo số 12 lên trên để đi song song với logo */
+    position: relative;
+    top: -1cm; /* Dịch số xếp hạng lên trên 1cm */
+    left: -1cm; /* Dịch số xếp hạng sang trái 1cm */
+}
+
+/* =========================================
+   B. KÉO QR CODE TO RA VÀ DỊCH SANG TRÁI
+   ========================================= */
+.qr-code-box, 
+.qr-container,
+.qr-block {
+    transform: scale(1.2); /* Phóng to 20% */
+    transform-origin: top right; /* Giữ tâm phóng to từ góc phải */
+    margin-right: 30px; /* Đẩy mã QR dịch sang bên trái một chút */
+    margin-top: 50px !important; /* Tạo khoảng trống với nút Đăng xuất ở trên */
+}
+
+/* =========================================
+   C. KÉO 4 Ô THỐNG KÊ XUỐNG DƯỚI
+   ========================================= */
+.stats-wrapper,
+.profile-stats,
+.stats-block {
+    margin-top: 50px !important; /* Ép đẩy tụt khối này xuống dưới một đoạn dài */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Giãn cách các ô thống kê cho thoáng */
+}
+
+/* =========================================
+   D. QUILL EDITOR DARK MODE CUSTOMIZATION
+   ========================================= */
+.ql-toolbar.ql-snow {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px 8px 0 0 !important;
+  color: #fff !important;
+}
+.ql-toolbar.ql-snow .ql-stroke {
+  stroke: #ccd6f6 !important;
+}
+.ql-toolbar.ql-snow .ql-fill {
+  fill: #ccd6f6 !important;
+}
+.ql-toolbar.ql-snow .ql-picker {
+  color: #ccd6f6 !important;
+}
+.ql-toolbar.ql-snow .ql-picker-options {
+  background-color: #0d1117 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+.ql-container.ql-snow {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0 0 8px 8px !important;
+  background: rgba(0, 0, 0, 0.25) !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 15px !important;
+  color: #ccd6f6 !important;
+}
+.ql-editor {
+  min-height: 250px !important;
+}
+.ql-editor.ql-blank::before {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+@media (max-width: 900px) {
+  .split-view-container {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

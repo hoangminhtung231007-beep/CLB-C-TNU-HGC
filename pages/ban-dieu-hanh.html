@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ban Điều Hành | CLB Cờ TNU - HGC</title>
+  <meta name="description" content="Ban Điều Hành câu lạc bộ cờ vua và cờ tướng TNU - HGC.">
+  <link rel="icon" href="data:,">
+  
+  <!-- Premium Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/thanh-vien.css">
+  <link rel="stylesheet" href="../css/pages/ban-dieu-hanh.css">
+  
+  <style>
+    #public-board-list {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 24px !important;
+      justify-content: center !important;
+      width: 100% !important;
+      padding: 20px 0 !important;
+    }
+    .executive-card-public {
+      background-color: #0f172a !important;
+      border: 1px solid #1e293b !important;
+      border-radius: 12px !important;
+      padding: 24px !important;
+      width: 250px !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
+    }
+    .executive-card-public:hover {
+      transform: translateY(-8px) scale(1.03) !important;
+      box-shadow: 0 15px 30px rgba(14, 165, 233, 0.3), 0 10px 20px rgba(0, 0, 0, 0.4) !important;
+      border-color: #0ea5e9 !important;
+    }
+    .executive-avatar-public {
+      width: 120px !important;
+      height: 120px !important;
+      border-radius: 50% !important;
+      border: 4px solid #0ea5e9 !important;
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.5) !important;
+      object-fit: cover !important;
+      margin-bottom: 16px !important;
+      transition: transform 0.3s ease !important;
+    }
+    .executive-card-public:hover .executive-avatar-public {
+      transform: scale(1.05) !important;
+    }
+    .executive-name-public {
+      color: #ffffff !important;
+      font-weight: bold !important;
+      font-size: 18px !important;
+      margin: 8px 0 4px 0 !important;
+      font-family: 'Outfit', sans-serif !important;
+    }
+    .executive-title-public {
+      color: #0ea5e9 !important;
+      font-weight: 700 !important;
+      font-size: 13px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.1em !important;
+      margin: 4px 0 !important;
+      font-family: 'Outfit', sans-serif !important;
+    }
+    .executive-mssv-public {
+      color: #94a3b8 !important;
+      font-size: 12px !important;
+      margin: 4px 0 0 0 !important;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: {
+        preflight: false,
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Dynamic Ambient Background Glows -->
+  <div class="ambient-bg">
+    <div class="glow-circle glow-blue"></div>
+    <div class="glow-circle glow-purple"></div>
+  </div>
+
+  <main class="app-container">
+    
+    <!-- Left Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Dominant Blue Showcase Section -->
+    <section class="blue-showcase-section" id="showcase-section">
+
+      <!-- ===== PAGE: BAN ĐIỀU HÀNH ===== -->
+      <div id="page-bandieuhanh" class="content-section" style="display: block;">
+        <div class="page-container" style="max-width: 1200px; margin: 0 auto;">
+          <h2 style="color: #f8fafc; margin-bottom: 20px;" class="page-title">THÀNH VIÊN BAN ĐIỀU HÀNH</h2>
+
+          <!-- Khu vực chứa BĐH Đương nhiệm -->
+          <div id="khuVucBdhTrangChu" class="w-full mb-10"></div>
+          
+          <!-- ===== CỰU BAN ĐIỀU HÀNH ===== -->
+          <div class="alumni-section" style="width: 100%; margin-top: 60px; text-align: center;">
+            <h2 style="color: #94a3b8; margin-bottom: 20px;" class="page-title page-title--secondary">CỰU THÀNH VIÊN BAN ĐIỀU HÀNH</h2>
+            <!-- Bảng Cựu BĐH đồng bộ với Bảng Thành Viên -->
+            <div class="glass-card no-hover member-table-container" style="padding: 0; overflow-x: auto; text-align: left;">
+              <table class="rank-table member-table">
+                <thead>
+                  <tr>
+                    <th style="text-align: left; padding: 12px 20px;">Thành viên</th>
+                    <th style="text-align: center; padding: 12px;">Khóa/Lớp</th>
+                    <th style="text-align: center; padding: 12px;">Giới tính</th>
+                    <th style="text-align: center; padding: 12px;">Danh hiệu</th>
+                    <th style="text-align: center; padding: 12px;">Chức vụ</th>
+                    <th style="text-align: center; padding: 12px;">Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody id="khuVucCuuBdhTrangChu">
+                  <tr><td colspan="6" style="text-align:center; color: #aaa; padding: 20px;">Đang tải danh sách cựu ban điều hành...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Modals Container -->
+  <div id="modals-container"></div>
+
+  <!-- JavaScript -->
+  <script type="module" src="../js/core/initSupabase.js"></script>
+  <script type="module" src="../js/core/app.js"></script>
+</body>
+</html>

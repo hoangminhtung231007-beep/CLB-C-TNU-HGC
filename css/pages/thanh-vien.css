@@ -1,0 +1,647 @@
+/* Member Table & Leaderboard Styles */
+.badge-icon-small {
+    width: 150px !important;
+    height: 150px !important;
+    vertical-align: middle;
+    margin-right: 8px;
+    object-fit: contain;
+}
+
+.member-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.member-table th {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #00d2ff;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.member-table td {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: white;
+  vertical-align: middle;
+}
+
+.member-table tbody tr {
+  transition: background-color 0.2s ease !important;
+}
+
+.member-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  cursor: pointer !important;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.player-info img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  object-fit: cover;
+  margin-top: 0.5cm !important;
+}
+
+.player-info span {
+  margin-top: 0.3cm !important;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.badge-gold {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  border: 1px solid #ffd700;
+}
+
+.badge-silver {
+  background: rgba(192, 192, 192, 0.2);
+  color: silver;
+  border: 1px solid silver;
+}
+
+.badge-bronze {
+  background: rgba(205, 127, 50, 0.2);
+  color: #cd7f32;
+  border: 1px solid #cd7f32;
+}
+
+/* Old status select styles removed in favor of components.css */
+
+.badge-type {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  display: inline-block;
+}
+.type-sinhhoat {
+  background: rgba(100, 255, 218, 0.1);
+  color: #64ffda;
+  border: 1px solid #64ffda;
+}
+.type-giaidau {
+  background: rgba(251, 191, 36, 0.1);
+  color: #fbbf24;
+  border: 1px solid #fbbf24;
+}
+.type-hoatdong {
+  background: rgba(192, 132, 252, 0.1);
+  color: #c084fc;
+  border: 1px solid #c084fc;
+}
+.status-upcoming {
+  background: rgba(0, 210, 255, 0.1);
+  color: #00d2ff;
+  border: 1px solid #00d2ff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  display: inline-block;
+  font-weight: bold;
+}
+
+/* =========================================
+   LEADERBOARD — Đồng bộ với hệ thống Card
+   ========================================= */
+
+/* 1. Section trong suốt, ăn theo nền tối toàn trang */
+#leaderboard-section {
+    background: transparent !important;
+    padding: 20px 30px;
+}
+
+/* 2. Container chuẩn Card trong suốt (Glassmorphism) */
+/* LEADERBOARD CONTAINER & TABLE */
+.leaderboard-container {
+  background: rgba(6, 7, 10, 0.75) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  padding: 0 !important;
+  margin-top: 25px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.leaderboard-table,
+.rank-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse !important;
+}
+
+.leaderboard-table th,
+.rank-table th {
+  padding: 14px 16px !important;
+  color: #00d2ff !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  border-bottom: 2px solid rgba(0, 210, 255, 0.3) !important;
+  text-align: center !important;
+  box-sizing: border-box;
+}
+
+.leaderboard-table td,
+.rank-table td {
+  padding: 12px 16px !important;
+  font-size: 15px;
+  color: #ffffff;
+  text-align: center !important;
+  vertical-align: middle !important;
+  box-sizing: border-box;
+}
+
+.leaderboard-table tbody tr,
+.rank-table tbody tr {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  transition: background-color 0.2s ease-in-out !important;
+}
+
+.leaderboard-table tbody tr:hover,
+.rank-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  cursor: pointer !important;
+}
+
+td.member-info-cell {
+  vertical-align: middle !important;
+  text-align: center !important;
+  padding: 12px 8px !important;
+  box-sizing: border-box !important;
+}
+
+td.member-info-cell .member-avatar-img {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+  object-fit: cover !important;
+  display: block !important;
+  margin: 0 auto 5px auto !important;
+  flex-shrink: 0 !important;
+}
+
+td.member-info-cell .member-name {
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  color: #fff !important;
+  display: block !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+  line-height: 1.3 !important;
+}
+
+/* MEMBER DIRECTORY (RANK TABLE) */
+.rank-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse !important;
+}
+
+.rank-table th {
+  padding: 14px 16px !important;
+  color: #00d2ff !important;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 2px solid rgba(0, 210, 255, 0.3) !important;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.rank-table th:nth-child(2) {
+  text-align: left !important;
+}
+
+.rank-table td {
+  padding: 12px 16px !important;
+  font-size: 15px;
+  color: #ffffff;
+  text-align: center;
+  vertical-align: middle !important;
+  box-sizing: border-box;
+}
+
+.rank-table tbody tr {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.rank-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  cursor: pointer !important;
+}
+
+/* Tổng điểm cực to nổi bật */
+.total-score-badge {
+  font-weight: 900;
+  font-size: 18px !important;
+  color: #64ffda;
+  text-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+}
+.rank-top-1 { background: linear-gradient(90deg, rgba(250, 204, 21, 0.1), transparent); color: #facc15 !important; font-weight: bold; }
+.rank-top-2 { background: linear-gradient(90deg, rgba(148, 163, 184, 0.1), transparent); color: #cbd5e1 !important; font-weight: bold; }
+.rank-top-3 { background: linear-gradient(90deg, rgba(217, 119, 6, 0.1), transparent); color: #fb923c !important; font-weight: bold; }
+
+.rank-number {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+}
+.badge-gold { background: #facc15; color: #0a192f; box-shadow: 0 0 10px #facc15; }
+.badge-silver { background: #cbd5e1; color: #0a192f; box-shadow: 0 0 10px #cbd5e1; }
+.badge-bronze { background: #fb923c; color: #0a192f; box-shadow: 0 0 10px #fb923c; }
+
+/* Khung chứa Vương miện */
+.rank-crown {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+}
+
+/* Icon Vương miện */
+.rank-crown i {
+    font-size: 36px;
+}
+
+/* Số nằm lọt thỏm trong Vương miện */
+.rank-crown .crown-num {
+    position: absolute;
+    top: 15px; /* Ép số hạ xuống đúng trọng tâm vương miện */
+    font-size: 15px;
+    font-weight: 900;
+    color: #0a192f; /* Chữ màu tối để nổi bật trên nền kim loại */
+}
+
+/* Màu sắc kim loại và hiệu ứng phát sáng cho Top 1, 2, 3 */
+.crown-1 i { 
+    color: #ffd700; /* Vàng Gold */
+    filter: drop-shadow(0 3px 8px rgba(255, 215, 0, 0.6)); 
+}
+.crown-2 i { 
+    color: #cbd5e1; /* Bạc Silver */
+    filter: drop-shadow(0 3px 8px rgba(148, 163, 184, 0.6)); 
+}
+.crown-3 i { 
+    color: #cd7f32; /* Đồng Bronze */
+    filter: drop-shadow(0 3px 8px rgba(205, 127, 50, 0.6)); 
+}
+
+
+
+/* MEMBERS TOOLBAR, BADGES & ACTION ICONS */
+.members-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+  background: rgba(10, 15, 30, 0.4) !important;
+  padding: 16px 24px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-wrapper .search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.search-wrapper .input-field {
+  padding-left: 40px !important;
+  width: 100%;
+  margin: 0 !important;
+}
+
+.filter-group {
+  display: flex;
+  gap: 12px;
+}
+
+.filter-select {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 10px 16px !important;
+  border-radius: 8px !important;
+  outline: none !important;
+  cursor: pointer !important;
+  font-family: var(--font-sans) !important;
+  font-size: 14px !important;
+  transition: all 0.3s !important;
+}
+
+.filter-select:focus {
+  border-color: #64ffda !important;
+  box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2) !important;
+}
+
+.filter-select option {
+  background: #0b0c10 !important;
+  color: white !important;
+}
+
+/* Badge style for Role (Chức vụ) */
+.role-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 4px 12px !important;
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border: 1px solid transparent !important;
+  text-transform: capitalize !important;
+}
+
+.role-badge.role-chunhiem {
+  background-color: rgba(250, 204, 21, 0.15) !important;
+  color: #facc15 !important;
+  border-color: rgba(250, 204, 21, 0.3) !important;
+}
+
+.role-badge.role-phochunhiem {
+  background-color: rgba(0, 210, 255, 0.15) !important;
+  color: #00d2ff !important;
+  border-color: rgba(0, 210, 255, 0.3) !important;
+}
+
+.role-badge.role-truongban {
+  background-color: rgba(168, 85, 247, 0.15) !important;
+  color: #a855f7 !important;
+  border-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+.role-badge.role-hoivien {
+  background-color: rgba(156, 163, 175, 0.15) !important;
+  color: #9ca3af !important;
+  border-color: rgba(156, 163, 175, 0.3) !important;
+}
+
+/* Action Icons column styling */
+.action-cell {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  height: 100% !important;
+  align-items: center !important;
+}
+
+.action-btn {
+  background: transparent !important;
+  border: none !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  cursor: pointer !important;
+  padding: 8px !important;
+  border-radius: 6px !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.action-btn i {
+  font-size: 16px !important;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px) scale(1.05) !important;
+}
+
+.action-btn.view-btn:hover {
+  color: #00d2ff !important;
+  background: rgba(0, 210, 255, 0.12) !important;
+}
+
+.action-btn.edit-btn:hover {
+  color: #facc15 !important;
+  background: rgba(250, 204, 21, 0.12) !important;
+}
+
+.action-btn.delete-btn:hover {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.12) !important;
+}
+
+/* === Redesigned Member List Table (Matching Admin Portal) === */
+.member-table-container {
+  background: rgba(6, 7, 10, 0.75) !important;
+  background-color: rgba(6, 7, 10, 0.75) !important;
+  background-image: none !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 16px !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+/* Ensure no hover changes at all on the container */
+.member-table-container:hover {
+  background: rgba(6, 7, 10, 0.75) !important;
+  background-color: rgba(6, 7, 10, 0.75) !important;
+  background-image: none !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Shrink table row spacing — compact row height */
+.rank-table tbody tr {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+/* 1. General cells: reduced padding for slimmer rows */
+.rank-table td {
+  padding: 12px 16px !important;
+  vertical-align: middle !important;
+  text-align: center !important;
+  height: auto !important;
+}
+
+/* 3. Khóa/Lớp column: center both header and data, remove all left offsets */
+.rank-table th:nth-child(2) {
+  padding-left: 15px !important;
+  text-align: center !important;
+}
+
+.rank-table td:nth-child(2) {
+  padding-left: 15px !important;
+  text-align: center !important;
+}
+
+/* 2. Avatar + name cell: vertically centered in row (table-cell alignment) */
+.rank-table td.member-info-cell {
+  vertical-align: middle !important; /* Căn giữa khối avatar và tên theo chiều dọc hàng */
+  text-align: center !important;     /* Căn giữa theo chiều ngang ô */
+  padding: 12px 8px !important;
+  box-sizing: border-box !important;
+  border-bottom: none !important;
+  margin-left: 0 !important;
+}
+
+.rank-table td.member-info-cell .member-avatar-img {
+  width: 56px !important;            /* Phóng to avatar */
+  height: 56px !important;
+  border-radius: 50% !important;     /* Giữ bo tròn */
+  border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+  object-fit: cover !important;      /* Giữ không méo hình */
+  display: block !important;
+  margin: 0 auto 5px auto !important;/* Căn giữa ảnh và khoảng cách 5px với tên */
+  flex-shrink: 0 !important;
+}
+
+.rank-table td.member-info-cell .member-name {
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  color: #fff !important;
+  display: block !important;
+  margin: 0 auto !important;         /* Căn giữa tên thành viên */
+  text-align: center !important;
+  line-height: 1.3 !important;
+}
+
+/* Redesigned table headers: cyan color matching leaderboard */
+.rank-table th {
+  color: #00d2ff !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  border-bottom: 2px solid rgba(0, 210, 255, 0.3) !important;
+  padding: 14px 16px !important;
+  text-align: center !important;
+}
+
+/* Make THÀNH VIÊN header centered too for visual balance */
+.rank-table th:first-child {
+  text-align: center !important;
+}
+
+/* Redesigned static status badges (no click cursor, no hover animations) */
+.rank-table .status-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 4px 12px !important;
+  border-radius: 20px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: default !important; /* Static, non-clickable */
+  transition: none !important;
+}
+
+.rank-table .status-badge.status-online {
+  background-color: rgba(46, 204, 113, 0.15) !important;
+  color: #2ecc71 !important;
+  border: 1px solid rgba(46, 204, 113, 0.3) !important;
+}
+
+.rank-table .status-badge.status-pending {
+  background-color: rgba(249, 115, 22, 0.15) !important;
+  color: #f97316 !important;
+  border: 1px solid rgba(249, 115, 22, 0.3) !important;
+}
+
+.rank-table .status-badge.status-offline {
+  background-color: rgba(156, 163, 175, 0.15) !important;
+  color: #9ca3af !important;
+  border: 1px solid rgba(156, 163, 175, 0.3) !important;
+}
+
+/* Khung bao quanh bảng luôn giữ nguyên màu nền tối tĩnh, không bị đổi màu khi hover */
+.member-table-container,
+.member-table-container:hover {
+    background: rgba(6, 7, 10, 0.75) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+    transform: none !important;
+}
+
+/* Hiệu ứng sáng nhẹ khi di chuột vào từng hàng thành viên (Row Hover) */
+tbody tr,
+.table-container table tbody tr,
+.member-table-container table tbody tr,
+.rank-table tbody tr,
+.member-table tbody tr {
+    transition: all 0.2s ease-in-out !important;
+}
+
+/* Ghi đè triệt để mọi nền xanh/gradient cũ, chỉ giữ lại lớp sáng trắng mờ */
+tbody tr:hover,
+.table-container table tbody tr:hover,
+.member-table-container table tbody tr:hover,
+.rank-table tbody tr:hover,
+.member-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.08) !important; /* Phủ lớp trắng sáng mờ 8% */
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    background-image: none !important; /* Tắt ngay lập tức mọi gradient xanh nếu có */
+    box-shadow: none !important;
+    cursor: pointer !important;
+}
+
+/* Đảm bảo các ô bên trong hoàn toàn trong suốt, không đè lên nền của hàng */
+tbody tr:hover td,
+.table-container table tbody tr:hover td,
+.member-table-container table tbody tr:hover td,
+.rank-table tbody tr:hover td,
+.member-table tbody tr:hover td {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+
+

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hồ Sơ Cá Nhân | CLB Cờ TNU - HGC</title>
+  <meta name="description" content="Hồ sơ cá nhân thành viên CLB Cờ TNU - HGC.">
+  <link rel="icon" href="data:,">
+  
+  <!-- Premium Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/ho-so.css">
+  
+  <!-- CropperJS CSS & JS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <style>
+    #crop-modal.hidden {
+      display: none !important;
+    }
+    #crop-modal {
+      display: flex !important;
+    }
+  </style>
+</head>
+<body>
+  <input type="file" id="hidden-avatar-input" accept="image/*" style="display: none;">
+
+  <!-- Dynamic Ambient Background Glows -->
+  <div class="ambient-bg">
+    <div class="glow-circle glow-blue"></div>
+    <div class="glow-circle glow-purple"></div>
+  </div>
+
+  <main class="app-container">
+    
+    <!-- Left Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Dominant Blue Showcase Section -->
+    <section class="blue-showcase-section" id="showcase-section">
+
+      <!-- ===== PAGE: HỒ SƠ CÁ NHÂN ===== -->
+          <div id="page-profile" class="content-section" style="display: block;">
+            <div class="page-container" style="padding: 20px;">
+              
+              <!-- Esports Gaming Card -->
+              <div style="background-color: #111827; border: 1px solid #1e293b; box-shadow: 0 0 30px rgba(0, 190, 255, 0.15); width: 100%; max-width: 1050px; margin: 30px auto; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; display: flex; flex-wrap: wrap; gap: 35px; border-radius: 8px; position: relative; align-items: stretch; padding: 35px; box-sizing: border-box;">
+                  
+                  <!-- Dải viền Neon trên cùng -->
+                  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #00beff, #005a82);"></div>
+
+                  <!-- Cột trái: Avatar & Tên (Cột vinh danh) -->
+                  <div style="padding: 0; text-align: center; flex: 1.2; min-width: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; width: 100%;">
+                      
+                      <!-- Khung Avatar Lục giác / Viền sáng -->
+                      <div style="width: 168px; height: 168px; border-radius: 50%; padding: 4px; background: linear-gradient(180deg, #0ea5e9, transparent); margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">
+                          <img id="hs_avatar" class="w-40 h-40 rounded-full border-4 border-[#0ea5e9] shadow-[0_0_15px_rgba(14,165,233,0.5)] object-cover" src="/assets/logos/logo-clb.jpg" alt="Avatar" style="width: 160px; height: 160px; object-fit: cover; border-radius: 50%; border: 4px solid #0ea5e9; box-shadow: 0 0 15px rgba(14, 165, 233, 0.5);">
+                      </div>
+                      
+                      <!-- Tên / IGN Tuyển thủ -->
+                      <div style="margin-bottom: 5px; width: 100%;">
+                          <h2 id="hs_hoten" style="color: #ffffff; font-size: 28px; font-weight: 900; margin: 10px 0; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; line-height: 1.2;">MEMBER</h2>
+                      </div>
+
+                      <!-- Khối QR Code chuyển sang cột trái -->
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 10px;">
+                        <div style="background: #ffffff; padding: 10px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: inline-block;">
+                          <img id="hs_qrcode" src="" alt="Mã QR Điểm Danh" style="width: 180px !important; height: 180px !important; border-radius: 8px; cursor: pointer; display: block;" onclick="openQRZoomModal()">
+                        </div>
+                        <span style="font-size: 11px; color: #00beff; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px;">Mã QR Điểm Danh</span>
+                      </div>
+                  </div>
+
+                  <!-- Cột phải: Chỉ số & Thông tin (Bảng Stats) -->
+                  <div style="padding: 0; flex: 2; min-width: 300px; display: flex; flex-direction: column; justify-content: center;">
+                      
+                      <!-- Khối Chỉ số KDA / Thành tích -->
+                      <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 25px; margin-bottom: 25px;">
+                          <div style="text-align: center;">
+                              <p style="font-size: 11px; color: #64748b; font-weight: bold; margin: 0 0 5px 0; text-transform: uppercase;">Sinh hoạt</p>
+                              <p id="stat-sinh-hoat" style="color: #f8fafc; font-size: 48px; font-weight: 900; margin: 0; text-shadow: 0 0 10px rgba(255,255,255,0.2);"><span id="diemSinhHoat">0</span></p>
+                          </div>
+                          <div style="text-align: center;">
+                              <p style="font-size: 11px; color: #64748b; font-weight: bold; margin: 0 0 5px 0; text-transform: uppercase;">Giải đấu</p>
+                              <p id="stat-giai-dau" style="color: #00beff; font-size: 48px; font-weight: 900; margin: 0; text-shadow: 0 0 15px rgba(0, 190, 255, 0.4);"><span id="diemGiaiDau">0</span></p>
+                          </div>
+                          <div style="text-align: center;">
+                              <p style="font-size: 11px; color: #64748b; font-weight: bold; margin: 0 0 5px 0; text-transform: uppercase;">Hoạt động</p>
+                              <p id="stat-hoat-dong" style="color: #f59e0b; font-size: 48px; font-weight: 900; margin: 0; text-shadow: 0 0 15px rgba(245, 158, 11, 0.4);"><span id="diemHoatDong">0</span></p>
+                          </div>
+                      </div>
+
+                      <!-- Lưới Thông tin chi tiết -->
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                          <div>
+                              <span style="display: block; font-size: 14px; color: #64748b; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">MSSV (ID)</span>
+                              <strong style="color: #f1f5f9; font-size: 20px; font-weight: bold;"><span id="hs_mssv">---</span></strong>
+                          </div>
+                          <div>
+                              <span style="display: block; font-size: 14px; color: #64748b; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">Khóa / Lớp</span>
+                              <strong style="color: #f1f5f9; font-size: 20px; font-weight: bold;"><span id="hs_khoa">---</span></strong>
+                          </div>
+                          <div>
+                              <span style="display: block; font-size: 14px; color: #64748b; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">Ngày sinh</span>
+                              <strong style="color: #f1f5f9; font-size: 20px; font-weight: bold;"><span id="hs_ngaysinh">---</span></strong>
+                          </div>
+                          <div>
+                              <span style="display: block; font-size: 14px; color: #64748b; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">Gia nhập</span>
+                              <strong style="color: #f1f5f9; font-size: 20px; font-weight: bold;"><span id="hs_gianhap">---</span></strong>
+                          </div>
+                          <div style="cursor: pointer;" onclick="if(typeof window.showPopupThangCap==='function') window.showPopupThangCap(document.getElementById('hs_danhhieu') ? document.getElementById('hs_danhhieu').innerText : '', document.getElementById('membership-rank') ? document.getElementById('membership-rank').src : '')" title="Bấm để xem Bảng vinh danh thăng cấp">
+                              <span style="display: block; font-size: 14px; color: #64748b; margin-bottom: 6px; font-weight: bold; text-transform: uppercase;">Danh hiệu <i class="fa-solid fa-sparkles" style="color: #facc15; font-size: 12px; margin-left: 4px;"></i></span>
+                              <div style="display: flex; justify-content: center; align-items: center; background: transparent; font-weight: bold; height: 160px; width: 100%; box-sizing: border-box; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+                                  <img id="membership-rank" src="../assets/badges/bac1.png" alt="Huy hiệu" style="width: 150px !important; height: 150px !important; max-width: none !important; max-height: none !important; object-fit: contain; filter: drop-shadow(0 0 20px rgba(250,204,21,0.5)); display: block; transform: scale(2.2) translateY(12px);" />
+                              </div>
+                              <div style="text-align: center; color: #facc15; font-weight: bold; font-size: 14px; margin-top: 14px;"><span id="hs_danhhieu">---</span></div>
+                          </div>
+                          <div>
+                              <span style="display: block; font-size: 14px; color: #64748b; margin-bottom: 6px; font-weight: bold; text-transform: uppercase;">Xếp hạng</span>
+                              <div style="display: flex; justify-content: center; align-items: center; background: transparent; font-weight: bold; height: 160px; width: 100%; box-sizing: border-box;">
+                                  <p id="profile-leaderboard-rank" style="font-size: 96px; font-weight: 900; color: #f59e0b; text-shadow: 0 0 35px rgba(245, 158, 11, 0.7); margin: 0; display: flex; align-items: center; justify-content: center; line-height: 1; transform: scale(1.2) translateY(12px);">--</p>
+                              </div>
+                              <!-- Hidden element for compatibility with app.js gender loading -->
+                              <span id="profile-gender" style="display: none;"></span>
+                          </div>
+
+                          <!-- Khối các nút bấm (Thiết kế lại UI hiện đại & cân đối) -->
+                          <div id="profile-action-buttons" style="display: flex; flex-direction: column; gap: 10px; margin-top: 25px; width: 100%; grid-column: span 2; border-top: 1px solid #1e293b; padding-top: 25px;">
+                              <!-- Hàng trên: 2 nút chức năng chia đôi diện tích -->
+                              <div class="relative z-10" style="display: flex; gap: 10px; width: 100%; position: relative; z-index: 10;">
+                                  <div style="flex: 1;">
+                                      <button id="btn-change-avatar" style="width: 100%; background-color: #0ea5e9; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                                          Đổi ảnh đại diện
+                                      </button>
+                                      <input type="file" id="hidden-avatar-input" accept="image/*" style="display: none;">
+                                  </div>
+                                  <button id="btn-feedback" onclick="window.location.href='mailto:contact@hgc.club?subject=Ý kiến đóng góp từ Thành viên'" style="flex: 1; background-color: #10b981; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                                      Gửi ý kiến
+                                  </button>
+                              </div>
+                              
+                              <!-- Hàng dưới: Nút Đăng xuất trải dài 100% -->
+                              <button id="btn-logout" onclick="logout()" style="width: 100%; background-color: #ef4444; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                                  Đăng xuất
+                              </button>
+                          </div>
+
+                      </div>
+                      
+                  </div>
+              </div>
+            </div>
+        </div>
+      </div><!-- /#page-profile -->
+
+    </section>
+
+  </main>
+
+  <!-- Modals Container -->
+  <div id="modals-container"></div>
+
+  <!-- ===== MODAL: CHÚC MỪNG THĂNG CẤP DANH HIỆU ===== -->
+  <div id="popupThangCap" class="modal-overlay hidden" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(8px);" onclick="dongPopupThangCap()">
+    <div class="modal-content rank-up-modal" onclick="event.stopPropagation()" style="max-width: 480px; width: 92vw; text-align: center; position: relative; padding: 35px 25px; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%); border: 2px solid #facc15; box-shadow: 0 0 60px rgba(250, 204, 21, 0.45); border-radius: 20px; overflow: hidden; animation: popInRank 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+      
+      <!-- Background Glow Effect -->
+      <div style="position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 280px; height: 280px; background: radial-gradient(circle, rgba(250,204,21,0.3) 0%, transparent 70%); pointer-events: none; border-radius: 50%;"></div>
+      
+      <h2 style="color: #facc15; font-size: 26px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin: 5px 0 10px; text-shadow: 0 0 18px rgba(250, 204, 21, 0.7);">
+        🎉 CHÚC MỪNG THĂNG CẤP! 🎉
+      </h2>
+      
+      <p style="color: #e2e8f0; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">
+        Xin chúc mừng bạn đã xuất sắc đạt được danh hiệu vinh danh mới trong CLB Cờ TNU - HGC!
+      </p>
+
+      <!-- Khung hiển thị Huy hiệu Danh hiệu mới -->
+      <div style="position: relative; display: flex; justify-content: center; align-items: center; margin: 10px 0 20px; min-height: 230px;">
+        <!-- Aura sáng tỏa đằng sau -->
+        <div style="position: absolute; width: 220px; height: 220px; background: radial-gradient(circle, rgba(250, 204, 21, 0.4) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+        <img id="imgDanhHieuMoi" src="../assets/badges/bac1.png" alt="Danh hiệu mới" style="width: 230px; height: 230px; max-width: 80vw; max-height: 230px; object-fit: contain; filter: drop-shadow(0 0 35px rgba(250, 204, 21, 0.9)); display: block; position: relative; z-index: 1; transform: scale(1.05);">
+      </div>
+
+      <!-- Tên danh hiệu mới -->
+      <div style="background: rgba(250, 204, 21, 0.12); border: 1px solid rgba(250, 204, 21, 0.35); border-radius: 12px; padding: 14px 20px; margin-bottom: 25px;">
+        <span style="display: block; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Danh hiệu mới nhận</span>
+        <h3 id="tenDanhHieuMoi" style="color: #facc15; font-size: 22px; font-weight: 800; margin: 4px 0 0; text-shadow: 0 0 12px rgba(250,204,21,0.6);">
+          Thành viên mới
+        </h3>
+      </div>
+
+      <!-- Nút xác nhận nhận phần thưởng / Đóng -->
+      <button id="btnDongPopupThangCap" onclick="dongPopupThangCap()" style="width: 100%; padding: 15px 20px; background: linear-gradient(90deg, #facc15, #f59e0b); color: #0f172a; font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 25px rgba(250, 204, 21, 0.5); transition: all 0.3s ease;">
+        Nhận Danh Hiệu & Tiếp Tục
+      </button>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script type="module" src="../js/core/initSupabase.js"></script>
+  <script type="module" src="../js/core/app.js"></script>
+  <script type="module" src="../js/pages/ho-so.js"></script>
+  <!-- Crop Image Modal -->
+  <div id="crop-modal" class="fixed inset-0 z-[9999] hidden bg-black bg-opacity-80 flex items-center justify-center p-4" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; background-color: rgba(0, 0, 0, 0.8); align-items: center; justify-content: center; padding: 16px;">
+      <div class="bg-[#1e293b] rounded-lg p-4 w-full max-w-md" style="background-color: #1e293b; border-radius: 8px; padding: 16px; width: 100%; max-width: 448px; box-sizing: border-box;">
+          <h3 class="text-white font-bold mb-4 text-center" style="color: #fff; font-weight: bold; margin-top: 0; margin-bottom: 16px; text-align: center;">Căn chỉnh ảnh đại diện</h3>
+          <div class="w-full h-64 bg-black mb-4" style="width: 100%; height: 256px; background-color: #000; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+              <img id="crop-image-target" src="" class="max-w-full block" style="max-width: 100%; max-height: 100%; display: block;">
+          </div>
+          <div class="flex gap-2 justify-end" style="display: flex; gap: 8px; justify-content: flex-end;">
+              <button id="btn-cancel-crop" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500" style="padding: 8px 16px; background-color: #4b5563; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">Hủy</button>
+              <button id="btn-save-crop" class="px-4 py-2 bg-[#0ea5e9] text-white rounded hover:bg-blue-500 font-bold" style="padding: 8px 16px; background-color: #0ea5e9; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Lưu ảnh</button>
+          </div>
+      </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh Sách Thành Viên - TNU-HGC</title>
+  <meta name="description" content="Danh sách thành viên chính thức thuộc CLB Cờ TNU - HGC">
+
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSS Core & Page -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/thanh-vien.css">
+</head>
+<body class="bg-dark text-light">
+
+  <!-- Left Sidebar Container -->
+  <div id="sidebar-container"></div>
+
+  <!-- Main Content Layout -->
+  <main class="main-content-layout">
+
+    <section class="content-body">
+
+      <!-- ===== PAGE: THÀNH VIÊN ===== -->
+      <div id="page-thanhvien" class="content-section" style="display: block;">
+        <div class="page-container" style="max-width: 1200px; margin: 0 auto;">
+          <h2 class="page-title">Danh Sách Thành Viên</h2>
+          
+          <div id="total-members-card" class="glass-card" style="width: 100%; padding: 20px 30px; display: flex; align-items: center; gap: 20px; margin-bottom: 40px; border-left: 4px solid #00d2ff;">
+            <i class="fa-solid fa-users" style="font-size: 28px; color: #00d2ff;"></i>
+            <span style="font-size: 20px; color: white; font-weight: 500;">Tổng số thành viên đã tham gia chính thức: <strong id="total-member-count" style="font-size: 32px; color: #64ffda; margin-left: 10px; font-family: 'Montserrat', sans-serif;">0</strong></span>
+          </div>
+
+          <div class="members-toolbar">
+            <div class="search-wrapper">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="search-member" oninput="filterMembers()" placeholder="Tìm thành viên theo tên..." class="input-field">
+            </div>
+          </div>
+
+          <div class="glass-card no-hover member-table-container" style="padding: 0; overflow-x: auto;">
+            <table class="rank-table member-table">
+              <thead>
+                <tr>
+                  <th style="text-align: left; padding: 12px 20px;">Thành viên</th>
+                  <th style="text-align: center; padding: 12px;">Khóa/Lớp</th>
+                  <th style="text-align: center; padding: 12px;">Giới tính</th>
+                  <th style="text-align: center; padding: 12px;">Danh hiệu</th>
+                  <th style="text-align: center; padding: 12px;">Ngày tham gia</th>
+                  <th style="text-align: center; padding: 12px;">Trạng thái</th>
+                </tr>
+              </thead>
+              <tbody id="bangThanhVienPublic">
+                <tr><td colspan="6" style="text-align:center; color: #aaa;">Đang tải danh sách thành viên...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Modals Container -->
+  <div id="modals-container"></div>
+
+  <!-- JavaScript Modules -->
+  <script type="module" src="../js/core/initSupabase.js"></script>
+  <script type="module" src="../js/core/app.js"></script>
+  <script type="module" src="../js/pages/thanh-vien.js"></script>
+</body>
+</html>

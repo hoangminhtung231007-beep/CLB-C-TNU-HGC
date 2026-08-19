@@ -1,0 +1,73 @@
+<!-- Left Sidebar Panel (Seamless Black Panel) -->
+<aside class="sidebar-panel" id="sidebar">
+  <div class="sidebar-header">
+    <h1 class="sidebar-title">CLB CỜ TNU - HGC</h1>
+    <div class="badge-container">
+      <span class="pulse-dot"></span>
+      <span class="sidebar-subtitle">SÂN CHƠI TRÍ TUỆ - KẾT NỐI ĐAM MÊ</span>
+    </div>
+  </div>
+
+  <!-- BẮT ĐẦU PHẦN CODE CHÈN THÊM LOGO -->
+  <div class="sidebar-logo-wrapper">
+    <img 
+      id="sidebar-logo-img"
+      src="/assets/logos/logo-clb.jpg" 
+      alt="Logo CLB Cờ TNU - HGC" 
+      class="sidebar-logo"
+      loading="lazy"
+      style="width: 100%; object-fit: contain;"
+    />
+  </div>
+  <!-- KẾT THÚC PHẦN CODE CHÈN THÊM LOGO -->
+
+  <div class="sidebar-content">
+    <!-- Club Navigation -->
+    <nav class="sidebar-nav">
+      <ul class="sidebar-menu">
+        <li class="menu-item" onclick="switchMainTab('home', event)">
+          <a href="/index.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 10px; width: 100%;">
+            <i class="fa-solid fa-house"></i> Trang chủ
+          </a>
+        </li>
+        <li class="menu-item" onclick="switchMainTab('ban-dieu-hanh', event)">
+          <a href="/pages/ban-dieu-hanh.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 10px; width: 100%;">
+            <i class="fa-solid fa-users-gear"></i> Ban điều hành
+          </a>
+        </li>
+        <li class="menu-item" onclick="switchMainTab('thanh-vien', event)">
+          <a href="/pages/thanh-vien.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 10px; width: 100%;">
+            <i class="fa-solid fa-users"></i> Thành viên
+          </a>
+        </li>
+        <li class="menu-item" onclick="switchMainTab('leaderboard', event)">
+          <a href="/index.html?tab=leaderboard" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 10px; width: 100%;">
+            <i class="fa-solid fa-trophy"></i> Bảng xếp hạng
+          </a>
+        </li>
+        <li class="menu-item" onclick="switchMainTab('tin-tuc', event)">
+          <a href="/pages/tin-tuc.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 10px; width: 100%;">
+            <i class="fa-solid fa-newspaper"></i> Tin tức
+          </a>
+        </li>
+        <li class="menu-item" onclick="switchMainTab('gioi-thieu', event)">
+          <a href="/pages/gioi-thieu.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 10px; width: 100%;">
+            <i class="fa-solid fa-circle-info"></i> Giới thiệu
+          </a>
+        </li>
+        <li class="menu-item" id="menu-profile" style="display: none;" onclick="switchMainTab('ho-so', event)">
+          <a href="/pages/ho-so.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 10px; width: 100%;">
+            <i class="fa-solid fa-user"></i> Hồ sơ cá nhân
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="sidebar-footer">
+    <p>📍 Địa chỉ: Đại học Thái Nguyên phân hiệu tại Hà Giang. P. Hà Giang 1, T. Tuyên Quang</p>
+    <p>📧 Email: contact@hgc.club</p>
+    <p>📞 Hotline: 0123 456 789</p>
+    <p style="margin-top: 10px;">© TNU-HGC Chess Club</p>
+  </div>
+</aside>

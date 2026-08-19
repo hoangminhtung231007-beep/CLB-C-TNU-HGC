@@ -1,0 +1,112 @@
+/* Premium Personal Profile Card Stylesheet */
+
+/* Note: The old profile card styles (.profile-hero-card, .profile-details-grid, .stat-box, etc.) 
+   have been replaced by the modern, reusable .digital-id-* classes defined in css/components.css. */
+
+
+/* Mã QR gài kích thước 120px, căn giữa */
+.qr-block-vertical {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.qr-image-container {
+  width: 120px !important;
+  height: 120px !important;
+  background: #ffffff !important;
+  padding: 6px !important;
+  border-radius: 10px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+.qr-image-container img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  cursor: pointer !important;
+}
+
+.qr-label {
+  font-size: 11.5px !important;
+  color: #64ffda !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  text-shadow: 0 0 8px rgba(100, 255, 218, 0.3) !important;
+}
+
+/* Nút bấm (Button) nới rộng padding, chữ to rõ ràng, bo góc tinh tế */
+.feedback-btn {
+  width: 100% !important;
+  background: rgba(100, 255, 218, 0.1) !important;
+  border: 2px dashed #64ffda !important;
+  color: #64ffda !important;
+  padding: 14px 28px !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  font-size: 15px !important;
+  font-weight: bold !important;
+  transition: all 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+.feedback-btn:hover {
+  background: #64ffda !important;
+  color: #0b0c10 !important;
+}
+
+/* Modals overlays & z-index */
+.modal-overlay {
+  z-index: 9998 !important;
+}
+
+.modal {
+  z-index: 9999 !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 540px) {
+  .profile-hero-card {
+    padding: 24px 20px !important;
+    margin: 15px auto !important;
+  }
+  
+  .profile-details-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+}
+
+/* Rank-up Celebration Modal Styles */
+@keyframes popInRank {
+  0% { transform: scale(0.65) translateY(30px); opacity: 0; }
+  70% { transform: scale(1.05) translateY(-6px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+@keyframes pulseAura {
+  0% { transform: scale(0.95); opacity: 0.4; filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.4)); }
+  100% { transform: scale(1.25); opacity: 0.9; filter: drop-shadow(0 0 45px rgba(250, 204, 21, 0.95)); }
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+}
+
+.confetti-piece {
+  position: fixed;
+  z-index: 10001;
+  pointer-events: none;
+  border-radius: 3px;
+  animation: confettiFall linear forwards;
+}
