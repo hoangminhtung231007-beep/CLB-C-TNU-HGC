@@ -32,11 +32,16 @@
     <p class="modal-subtitle" style="text-align: center; margin-bottom: 24px; color: rgba(255,255,255,0.6); font-size: 13.5px;">Gia nhập TNU - HGC Chess Club</p>
 
     <!-- 1. Form Đăng ký -->
-    <form id="registration-form" action="https://api.web3forms.com/submit" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
+    <form id="registration-form" action="https://api.web3forms.com/submit" method="POST" onsubmit="return formatEmail(this)" style="display: flex; flex-direction: column; gap: 20px;">
       
       <!-- Hidden Inputs cho Web3Forms -->
       <input type="hidden" name="access_key" value="a488ee54-5340-4090-8148-a4d75cb3e297">
-      <input type="hidden" name="subject" value="Có đơn xin gia nhập CLB mới!">
+      <!-- Đổi tên người gửi hiển thị trong Gmail -->
+      <input type="hidden" name="from_name" value="TNU-HGC Chess Club Website">
+      <!-- Tiêu đề email (Sẽ được Javascript tự động điền Tên + SĐT vào) -->
+      <input type="hidden" name="subject" id="emailSubject" value="Có đơn xin gia nhập CLB mới!">
+      <!-- Nội dung tổng hợp (Sẽ được Javascript tự động soạn thảo) -->
+      <textarea name="Message" id="emailMessage" style="display: none;"></textarea>
 
       <!-- Grid 2 Cột Rộng Rãi -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">

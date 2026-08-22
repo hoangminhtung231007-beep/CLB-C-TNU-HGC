@@ -760,6 +760,31 @@ async function handleLogin(e) {
 }
 window.handleLogin = handleLogin;
 
+function formatEmail(form) {
+  if (!form) return true;
+
+  // 1. Lấy giá trị từ các ô input khớp đúng với name và ID trong form
+  let name = form.querySelector('[name="Ho_Ten"]')?.value || form.querySelector('[name="Ho Ten"]')?.value || form.querySelector('#reg-ho-ten')?.value || 'Thành viên mới';
+  let phone = form.querySelector('[name="So_Dien_Thoai_Zalo"]')?.value || form.querySelector('[name="So Dien Thoai Zalo"]')?.value || form.querySelector('#reg-sdt')?.value || '';
+  let mssv = form.querySelector('[name="MSSV"]')?.value || form.querySelector('#reg-mssv')?.value || '';
+  let note = form.querySelector('[name="Trinh_Do_Va_Ghi_Chu"]')?.value || form.querySelector('[name="Trinh Do Va Ghi Chu"]')?.value || form.querySelector('#reg-kinh-nghiem')?.value || '';
+
+  // 2. Cập nhật Tiêu đề email (Subject)
+  let subjectInput = form.querySelector('#emailSubject') || form.querySelector('[name="subject"]');
+  if (subjectInput) {
+    subjectInput.value = `[Đăng ký thành viên mới] ${name} - ${phone}`;
+  }
+
+  // 3. Cập nhật nội dung Message tổng hợp ở cuối email
+  let messageInput = form.querySelector('#emailMessage') || form.querySelector('[name="Message"]') || form.querySelector('[name="message"]');
+  if (messageInput) {
+    messageInput.value = `THÔNG TIN ĐĂNG KÝ THÀNH VIÊN MỚI CLB CỜ TNU - HGC:\n\n- Họ và tên: ${name}\n- MSSV: ${mssv || 'Chưa cung cấp'}\n- Số điện thoại: ${phone}\n- Ghi chú / Trình độ cờ: ${note || 'Chưa cung cấp'}`;
+  }
+
+  return true; // Trả về true để cho phép Web3Forms tiếp tục gửi đi
+}
+window.formatEmail = formatEmail;
+
 async function handleRegister(e) {
   if (e && typeof e.preventDefault === 'function') {
     e.preventDefault();
