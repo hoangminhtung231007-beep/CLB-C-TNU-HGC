@@ -3340,6 +3340,46 @@ async function loadHoSoCaNhan() {
     if (gdEl && !document.getElementById('diemGiaiDau')) gdEl.innerText = String(gdVal);
     if (hdEl && !document.getElementById('diemHoatDong')) hdEl.innerText = String(hdVal);
 
+    // Tính toán và hiển thị thứ hạng BXH (Leaderboard rank)
+    try {
+      const client = (typeof supabase !== 'undefined' && supabase) || window.supabase;
+      if (client) {
+        const { data: allMembers } = await client
+          .from('thanh_vien')
+          .select('mssv, diem_sinh_hoat, diem_giai_dau, diem_hoat_dong, elo, sinhhoat, giaidau, hoatdong')
+          .neq('mssv', 'admin');
+
+        if (allMembers && allMembers.length > 0) {
+          const sorted = allMembers.map(m => {
+            const mSh = parseInt(m.diem_sinh_hoat ?? m.sinhhoat) || 0;
+            const mGd = parseInt(m.diem_giai_dau ?? m.giaidau) || 0;
+            const mHd = parseInt(m.diem_hoat_dong ?? m.hoatdong) || 0;
+            const mElo = parseInt(m.elo) || 0;
+            const total = mElo > 0 ? mElo : (mSh + mGd + mHd);
+            return {
+              mssv: String(m.mssv || '').toUpperCase().trim(),
+              total,
+              gd: mGd
+            };
+          }).sort((a, b) => {
+            if (b.total !== a.total) return b.total - a.total;
+            return b.gd - a.gd;
+          });
+
+          const currentCleanMSSV = String(mssvVal || currentMSSV || '').toUpperCase().trim();
+          const rIdx = sorted.findIndex(item => item.mssv === currentCleanMSSV);
+          const rankDisplay = rIdx !== -1 ? `#${String(rIdx + 1).padStart(2, '0')}` : '#--';
+
+          const rankEl = document.getElementById('profile-leaderboard-rank');
+          if (rankEl) {
+            rankEl.innerText = rankDisplay;
+          }
+        }
+      }
+    } catch (rankErr) {
+      console.warn('Lỗi tính thứ hạng:', rankErr);
+    }
+
     // Xử lý Bảng thông báo chúc mừng thăng cấp Danh hiệu
     const mssvKey = data.mssv || currentMSSV;
     if (mssvKey && danhHieuCaNhan && danhHieuCaNhan.ten) {
