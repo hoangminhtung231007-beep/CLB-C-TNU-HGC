@@ -174,26 +174,45 @@
   </div>
 </div>
 
-<!-- ===== MODAL: GÓP Ý ===== -->
-<div id="modal-feedback" class="modal-overlay" style="display: none;">
-  <div class="modal-content" style="max-width: 450px; text-align: left;">
-    <div class="modal-icon" style="text-align: center;">💬</div>
-    <h2 class="modal-title" style="text-align: center; margin-bottom: 15px;">GỬI Ý KIẾN GÓP Ý</h2>
-    <p class="modal-subtitle" style="text-align: center; margin-bottom: 20px;">Chúng tôi luôn lắng nghe ý kiến đóng góp từ thành viên</p>
-    
-    <form action="https://api.web3forms.com/submit" method="POST" id="formGopY" onsubmit="handleFeedbackSubmit(event)">
-      <input type="hidden" name="access_key" value="a488ee54-5340-4090-8148-a4d75cb3e297">
-      <input type="hidden" name="subject" value="Ý kiến đóng góp từ Thành viên">
-      <input type="hidden" name="Người gửi" id="gopy_hoten">
-      <input type="hidden" name="MSSV" id="gopy_mssv">
+<!-- ===== MODAL: GỬI Ý KIẾN GÓP Ý ===== -->
+<div id="modal-feedback" class="modal-overlay fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity" style="display: none;" onclick="closeModal('modal-feedback')">
+    <div class="modal-content bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden transform transition-transform" onclick="event.stopPropagation()" style="background: #0f172a; border: 1px solid #334155; border-radius: 16px; width: 100%; max-width: 460px; padding: 0; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+        
+        <!-- Nút Đóng Modal -->
+        <button type="button" onclick="closeModal('modal-feedback')" class="btn-close absolute top-4 right-4 text-slate-400 hover:text-white transition-colors" style="position: absolute; top: 16px; right: 16px; background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 20px; line-height: 1;">
+            <svg class="w-6 h-6" style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
 
-      <label style="color: #64ffda; font-size: 14px; text-align: left; display: block; margin-bottom: 5px;">Nội dung góp ý:</label>
-      <textarea id="feedback-text" name="message" class="input-field" rows="5" placeholder="Nhập ý kiến của bạn ở đây..." style="width: 100%; box-sizing: border-box; resize: vertical; min-height: 120px; font-family: var(--font-sans); margin-bottom: 20px; background: rgba(255, 255, 255, 0.06); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 12px 16px; outline: none;" required></textarea>
-      
-      <button type="submit" id="btn-submit-feedback" class="btn-submit" style="background: linear-gradient(90deg, #64ffda, #00f2fe); color: #06070a; font-weight: bold; width: 100%; border: none; border-radius: 12px; padding: 13px; cursor: pointer; font-size: 14px; letter-spacing: 0.06em; box-shadow: 0 4px 20px rgba(100, 255, 218, 0.3); transition: all 0.3s;">Gửi Ý Kiến</button>
-    </form>
-    <button class="btn-close" onclick="closeModal('modal-feedback')" style="background: transparent; border: none; color: rgba(255,255,255,0.4); width: 100%; padding: 10px; cursor: pointer; margin-top: 5px;">Hủy</button>
-  </div>
+        <!-- Tiêu đề -->
+        <div class="p-6 pb-4 border-b border-slate-800" style="padding: 24px 24px 16px; border-bottom: 1px solid #1e293b;">
+            <h3 class="text-xl font-bold text-white" style="margin: 0; font-size: 20px; font-weight: 700; color: #ffffff;">Gửi ý kiến đóng góp</h3>
+            <p class="text-sm text-slate-400 mt-1" style="margin: 4px 0 0; font-size: 13.5px; color: #94a3b8;">Ý kiến của bạn sẽ được gửi trực tiếp đến Ban Chủ Nhiệm.</p>
+        </div>
+
+        <!-- Form Web3Forms -->
+        <div class="p-6" style="padding: 24px;">
+            <form action="https://api.web3forms.com/submit" method="POST" id="formGopY" onsubmit="if(typeof handleFeedbackSubmit==='function'){ return handleFeedbackSubmit(event); }">
+                <input type="hidden" name="access_key" value="dfae664a-852d-4c2c-8342-2d2fcb27d3dc">
+                <input type="hidden" name="from_name" value="Góp ý CLB Cờ">
+                <input type="hidden" name="subject" value="[Ý kiến đóng góp] Có phản hồi mới từ thành viên">
+                <input type="hidden" name="Nguoi_Gui" id="gopy_hoten">
+                <input type="hidden" name="MSSV" id="gopy_mssv">
+                
+                <div class="space-y-4" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1" style="display: block; font-size: 14px; font-weight: 500; color: #cbd5e1; margin-bottom: 6px;">Nội dung ý kiến</label>
+                        <textarea id="feedback-text" name="NoiDung" required rows="4" placeholder="Nhập ý kiến của bạn tại đây..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all" style="width: 100%; box-sizing: border-box; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px 16px; color: #ffffff; min-height: 120px; outline: none; font-family: inherit; resize: vertical;"></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-6" style="margin-top: 20px;">
+                    <button type="submit" id="btn-submit-feedback" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-4 rounded-lg transition-colors" style="width: 100%; background: #06b6d4; color: #ffffff; font-weight: bold; padding: 12px 16px; border: none; border-radius: 8px; cursor: pointer; font-size: 15px; transition: background-color 0.2s;">
+                        Gửi Ý Kiến
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- ===== MODAL: PHÓNG TO MÃ QR ===== -->

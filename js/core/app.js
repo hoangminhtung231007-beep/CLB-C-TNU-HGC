@@ -1543,11 +1543,12 @@ async function handleFeedbackSubmit(e) {
     const mssv = document.getElementById('gopy_mssv')?.value || localStorage.getItem('currentUserMSSV') || localStorage.getItem('userMssv') || localStorage.getItem('mssv') || 'Chưa rõ';
 
     const payload = {
-      access_key: "a488ee54-5340-4090-8148-a4d75cb3e297",
-      subject: `[Góp ý thành viên] ${hoten} (${mssv})`,
-      from_name: `TNU-HGC Chess Club Website`,
-      "Người gửi": hoten,
+      access_key: "dfae664a-852d-4c2c-8342-2d2fcb27d3dc",
+      subject: `[Ý kiến đóng góp] ${hoten} (${mssv})`,
+      from_name: `Góp ý CLB Cờ`,
+      "Họ và tên": hoten,
       "MSSV": mssv,
+      "NoiDung": feedbackVal,
       message: feedbackVal
     };
 
