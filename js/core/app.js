@@ -159,7 +159,7 @@ const DEFAULT_ABOUT_CONTENT = `
             <p style="font-size: 18px; line-height: 1.8;"><strong style="color:#00d2ff; font-size: 20px; display: inline-flex; align-items: center; gap: 8px;">✨ Giá trị cốt lõi:</strong> <span id="about-values">Trí tuệ — Kỷ luật — Tôn trọng — Kết nối.</span></p>
             <br>
             <p style="font-size: 18px; line-height: 1.8;"><strong style="color:#00d2ff; font-size: 20px; display: inline-flex; align-items: center; gap: 8px;">📍 Địa chỉ:</strong> <span id="about-address">Đại học Thái Nguyên phân hiệu tại Hà Giang, Phường Hà Giang 1, Tỉnh Tuyên Quang.</span></p>
-            <p style="font-size: 18px; line-height: 1.8;"><strong style="color:#00d2ff; font-size: 20px; display: inline-flex; align-items: center; gap: 8px;">📧 Email:</strong> <span id="about-email">contact@hgc.club</span></p>
+            <p style="font-size: 18px; line-height: 1.8;"><strong style="color:#00d2ff; font-size: 20px; display: inline-flex; align-items: center; gap: 8px;">📧 Email:</strong> <span id="about-email">clbcotnuhgc@gmail.com</span></p>
 `;
 
 // Tải nội dung giới thiệu CLB động từ localStorage (CMS Module)

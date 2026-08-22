@@ -771,7 +771,7 @@ async function initQuillEditor() {
         <p style="font-size: 18px; line-height: 1.8;"><strong style="color:#00d2ff;">💎 Giá trị cốt lõi:</strong> <span id="about-values">Trí tuệ • Kỷ luật • Tôn trọng • Kết nối.</span></p>
         <br>
         <p style="font-size: 18px; line-height: 1.8;"><strong style="color:#00d2ff;">📍 Địa chỉ:</strong> <span id="about-address">Phân hiệu Đại học Thái Nguyên tại tỉnh Hà Giang, Phường Quang Trung, TP. Hà Giang.</span></p>
-        <p style="font-size: 18px; line-height: 1.8;"><strong style="color:#00d2ff;">✉️ Email:</strong> <span id="about-email">contact@hgc.club</span></p>
+        <p style="font-size: 18px; line-height: 1.8;"><strong style="color:#00d2ff;">✉️ Email:</strong> <span id="about-email">clbcotnuhgc@gmail.com</span></p>
       `;
     }
 
