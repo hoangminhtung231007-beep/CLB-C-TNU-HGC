@@ -1330,13 +1330,13 @@ export async function syncAvatarUpdateAcrossSystem(cleanMssv, publicUrl) {
       await supabase.from('thanh_vien').update({ avatar_url: publicUrl }).ilike('mssv', mssvUpper);
       await supabase.from('thanh_vien').update({ hinh_anh: publicUrl }).ilike('mssv', mssvUpper);
     }
-  } catch (e) {}
+  } catch (e) { }
 
   try {
     await supabase.from('ban_dieu_hanh').update({ avatar: publicUrl }).ilike('mssv', mssvUpper);
     await supabase.from('ban_dieu_hanh').update({ avatar_url: publicUrl }).ilike('mssv', mssvUpper);
     await supabase.from('ban_dieu_hanh').update({ hinh_anh: publicUrl }).ilike('mssv', mssvUpper);
-  } catch (e) {}
+  } catch (e) { }
 
   // 3. Cập nhật trực tiếp tất cả các thẻ <img> trên DOM ngay tức thì
   const targetIds = ['profile-avatar', 'hs_avatar', 'detail-member-avatar', 'user-avatar-img', 'user-avatar'];
@@ -1648,10 +1648,8 @@ window.switchMainTab = function (tabId, event) {
     if (tabId === 'tin-tuc' && typeof window.loadPublicNews === 'function') {
       window.loadPublicNews();
     }
-    if (tabId === 'ho-so') {
-      if (typeof window.loadHoSoCaNhan === 'function') window.loadHoSoCaNhan();
-      else if (typeof window.loadPersonalProfile === 'function') window.loadPersonalProfile();
-      else if (typeof loadHoSoCaNhan === 'function') loadHoSoCaNhan();
+    if (tabId === 'ho-so' && typeof window.loadPersonalProfile === 'function') {
+      window.loadPersonalProfile();
     }
   } else {
     // Dự phòng cho trường hợp đang ở trang phụ ngoài index.html
@@ -2736,6 +2734,67 @@ window.fetchMemberFullProfile = async function (mssv) {
   return profileData;
 };
 
+window.calculateLeaderboardRank = async function (targetMssv) {
+  if (!targetMssv) return '#--';
+  const cleanTarget = String(targetMssv).toUpperCase().trim();
+
+  try {
+    let memberList = [];
+    const client = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
+    if (client) {
+      const { data, error } = await client
+        .from('thanh_vien')
+        .select('*')
+        .neq('mssv', 'admin');
+      if (!error && data && data.length > 0) {
+        memberList = data;
+      }
+    }
+
+    if (!memberList || memberList.length === 0) {
+      try {
+        const cached = localStorage.getItem('club_members');
+        if (cached) memberList = JSON.parse(cached) || [];
+      } catch (e) { }
+    }
+
+    if (!memberList || memberList.length === 0) {
+      memberList = window.mockMembers || [];
+    }
+
+    if (!memberList || memberList.length === 0) return '#--';
+
+    const processed = memberList.map(m => {
+      const sh = parseInt(m.diem_sinh_hoat ?? m.sinhhoat ?? m.buoiSinhHoat ?? m.sh) || 0;
+      const gd = parseInt(m.diem_giai_dau ?? m.giaidau ?? m.giaiDau ?? m.gd) || 0;
+      const hd = parseInt(m.diem_hoat_dong ?? m.hoatdong ?? m.hoatDong ?? m.hd) || 0;
+      const elo = parseInt(m.elo) || 0;
+      const totalPoints = elo > 0 ? elo : (sh + gd + hd);
+      const mssvStr = String(m.mssv || m.id || '').toUpperCase().trim();
+      return {
+        mssv: mssvStr,
+        totalPoints,
+        gd
+      };
+    });
+
+    processed.sort((a, b) => {
+      if (b.totalPoints !== a.totalPoints) {
+        return b.totalPoints - a.totalPoints;
+      }
+      return b.gd - a.gd;
+    });
+
+    const rIdx = processed.findIndex(item => item.mssv === cleanTarget);
+    if (rIdx !== -1) {
+      return `#${String(rIdx + 1).padStart(2, '0')}`;
+    }
+  } catch (err) {
+    console.warn('Lỗi tính thứ hạng xếp hạng:', err);
+  }
+  return '#--';
+};
+
 window.syncProfileData = async function (data) {
   if (!data) return;
   const mssv = data.mssv || '';
@@ -2811,32 +2870,10 @@ window.syncProfileData = async function (data) {
     avatarUrl = avatarUrl.includes('?') ? `${avatarUrl}&t=${Date.now()}` : `${avatarUrl}?t=${Date.now()}`;
   }
 
-  // Tính rank
-  let rankStr = '#--';
-  try {
-    let client = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
-    if (client) {
-      const { data: allList } = await client.from('thanh_vien').select('mssv, diem_sinh_hoat, diem_giai_dau, diem_hoat_dong, elo, sinhhoat, giaidau, hoatdong').neq('mssv', 'admin');
-      if (allList && allList.length > 0) {
-        const sorted = allList.map(m => {
-          const mSh = parseInt(m.diem_sinh_hoat ?? m.sinhhoat) || 0;
-          const mGd = parseInt(m.diem_giai_dau ?? m.giaidau) || 0;
-          const mHd = parseInt(m.diem_hoat_dong ?? m.hoatdong) || 0;
-          const mElo = parseInt(m.elo) || 0;
-          const total = mElo > 0 ? mElo : (mSh + mGd + mHd);
-          return { mssv: String(m.mssv || '').toUpperCase().trim(), total: total, gd: mGd };
-        }).sort((a, b) => b.total === a.total ? b.gd - a.gd : b.total - a.total);
-
-        const cleanMssv = String(mssv || '').toUpperCase().trim();
-        const rIdx = sorted.findIndex(item => item.mssv === cleanMssv);
-        if (rIdx !== -1) {
-          rankStr = `#${String(rIdx + 1).padStart(2, '0')}`;
-        }
-      }
-    }
-  } catch (e) {
-    console.warn('Lỗi tính thứ hạng syncProfileData:', e);
-  }
+  // Tính rank chuẩn xác
+  const rankStr = (typeof window.calculateLeaderboardRank === 'function')
+    ? await window.calculateLeaderboardRank(mssv)
+    : '#--';
 
   // 1. Cập nhật Modal #modal-member-detail
   const elAvatar = document.getElementById('detail-member-avatar');
@@ -3102,15 +3139,6 @@ async function updateUIForLoggedInUser(user) {
     console.error("Lỗi đồng bộ thông tin UI người dùng:", e);
   }
 
-  // Tự động tải và đồng bộ toàn bộ dữ liệu hồ sơ (Stats, Rank BXH, Danh hiệu...)
-  try {
-    if (typeof loadHoSoCaNhan === 'function') {
-      await loadHoSoCaNhan();
-    }
-  } catch (eHs) {
-    console.warn("Lỗi loadHoSoCaNhan:", eHs);
-  }
-
   // Rẽ nhánh dành riêng cho Admin: chuyển hướng thẳng sang trang quản trị
   if (mssvHienTai === 'admin') {
     const path = window.location.pathname;
@@ -3367,40 +3395,16 @@ async function loadHoSoCaNhan() {
 
     // Tính toán và hiển thị thứ hạng BXH (Leaderboard rank)
     try {
-      const client = (typeof supabase !== 'undefined' && supabase) || window.supabase;
-      if (client) {
-        const { data: allMembers } = await client
-          .from('thanh_vien')
-          .select('mssv, diem_sinh_hoat, diem_giai_dau, diem_hoat_dong, elo, sinhhoat, giaidau, hoatdong')
-          .neq('mssv', 'admin');
+      const currentTargetMssv = data.mssv || mssvVal || currentMSSV;
+      const rankDisplay = (typeof window.calculateLeaderboardRank === 'function')
+        ? await window.calculateLeaderboardRank(currentTargetMssv)
+        : '#--';
 
-        if (allMembers && allMembers.length > 0) {
-          const sorted = allMembers.map(m => {
-            const mSh = parseInt(m.diem_sinh_hoat ?? m.sinhhoat) || 0;
-            const mGd = parseInt(m.diem_giai_dau ?? m.giaidau) || 0;
-            const mHd = parseInt(m.diem_hoat_dong ?? m.hoatdong) || 0;
-            const mElo = parseInt(m.elo) || 0;
-            const total = mElo > 0 ? mElo : (mSh + mGd + mHd);
-            return {
-              mssv: String(m.mssv || '').toUpperCase().trim(),
-              total,
-              gd: mGd
-            };
-          }).sort((a, b) => {
-            if (b.total !== a.total) return b.total - a.total;
-            return b.gd - a.gd;
-          });
+      const rankEl = document.getElementById('profile-leaderboard-rank');
+      if (rankEl) rankEl.innerText = rankDisplay;
 
-          const currentCleanMSSV = String(mssvVal || currentMSSV || '').toUpperCase().trim();
-          const rIdx = sorted.findIndex(item => item.mssv === currentCleanMSSV);
-          const rankDisplay = rIdx !== -1 ? `#${String(rIdx + 1).padStart(2, '0')}` : '#--';
-
-          const rankEl = document.getElementById('profile-leaderboard-rank');
-          if (rankEl) {
-            rankEl.innerText = rankDisplay;
-          }
-        }
-      }
+      const detailRankEl = document.getElementById('detail-member-rank');
+      if (detailRankEl) detailRankEl.innerText = rankDisplay;
     } catch (rankErr) {
       console.warn('Lỗi tính thứ hạng:', rankErr);
     }
@@ -3428,18 +3432,18 @@ async function loadHoSoCaNhan() {
 function spawnConfetti() {
   const colors = ['#facc15', '#f59e0b', '#0ea5e9', '#38bdf8', '#10b981', '#ec4899', '#a855f7', '#ffffff'];
   const particleCount = 45;
-  
+
   for (let i = 0; i < particleCount; i++) {
     const particle = document.createElement('div');
     particle.className = 'confetti-piece';
-    
+
     const size = Math.random() * 9 + 5;
     const isCircle = Math.random() > 0.5;
     const color = colors[Math.floor(Math.random() * colors.length)];
     const left = Math.random() * 100;
     const duration = Math.random() * 2 + 2;
     const delay = Math.random() * 0.8;
-    
+
     particle.style.cssText = `
       position: fixed;
       top: -20px;
@@ -3453,9 +3457,9 @@ function spawnConfetti() {
       box-shadow: 0 0 10px ${color};
       animation: confettiFall ${duration}s linear ${delay}s forwards;
     `;
-    
+
     document.body.appendChild(particle);
-    
+
     setTimeout(() => {
       if (particle && particle.parentNode) {
         particle.remove();
@@ -3471,20 +3475,20 @@ function playFanfare() {
     if (!AudioContext) return;
     const ctx = new AudioContext();
     const chord = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 (Triumphant fanfare)
-    
+
     chord.forEach((freq, i) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.1);
-      
+
       gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.1);
       gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + i * 0.1 + 0.05);
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.7);
-      
+
       osc.connect(gain);
       gain.connect(ctx.destination);
-      
+
       osc.start(ctx.currentTime + i * 0.1);
       osc.stop(ctx.currentTime + i * 0.1 + 0.75);
     });
@@ -3498,7 +3502,7 @@ export function showPopupThangCap(tenMoi, imgMoi) {
   let popup = document.getElementById('popupThangCap');
   const isNested = typeof window !== 'undefined' && window.location.pathname.includes('/pages/');
   const prefix = isNested ? '../' : './';
-  
+
   if (!popup) {
     const div = document.createElement('div');
     div.id = 'popupThangCap';

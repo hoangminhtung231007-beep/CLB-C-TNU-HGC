@@ -3,13 +3,13 @@ import { supabase } from '../core/supabaseClient.js';
 export async function loadHoSoCaNhan() {
   // 1. Lấy MSSV từ trí nhớ tạm của trình duyệt
   const currentMSSV = localStorage.getItem('currentUserMSSV') || localStorage.getItem('userMssv') || localStorage.getItem('mssv');
-  
+
   // Nếu chưa có MSSV (chưa đăng nhập), chỉ chuyển hướng NẾU đang ở trang Hồ sơ (ho-so.html)
   if (!currentMSSV) {
     const trangHienTai = window.location.pathname;
     if (trangHienTai.includes('ho-so.html')) {
       const isNested = trangHienTai.includes('/pages/');
-      window.location.replace(isNested ? '../index.html' : 'index.html'); 
+      window.location.replace(isNested ? '../index.html' : 'index.html');
     }
     return;
   }
@@ -49,19 +49,19 @@ export async function loadHoSoCaNhan() {
     let trangThaiCaNhan = null;
 
     if (data.ban_dieu_hanh && data.ban_dieu_hanh.length > 0) {
-        chucVuCaNhan = data.ban_dieu_hanh[0].chuc_vu;
-        trangThaiCaNhan = data.ban_dieu_hanh[0].trang_thai;
+      chucVuCaNhan = data.ban_dieu_hanh[0].chuc_vu;
+      trangThaiCaNhan = data.ban_dieu_hanh[0].trang_thai;
     }
 
     const danhHieuCaNhan = (typeof window !== 'undefined' && typeof window.tinhToanDanhHieu === 'function')
-        ? window.tinhToanDanhHieu(
-            data.diem_sinh_hoat, 
-            data.diem_giai_dau, 
-            data.diem_hoat_dong, 
-            chucVuCaNhan, 
-            trangThaiCaNhan
-        )
-        : { ten: data.danh_hieu || data.title || 'Thành viên', img: './assets/badges/bac1.png' };
+      ? window.tinhToanDanhHieu(
+        data.diem_sinh_hoat,
+        data.diem_giai_dau,
+        data.diem_hoat_dong,
+        chucVuCaNhan,
+        trangThaiCaNhan
+      )
+      : { ten: data.danh_hieu || data.title || 'Thành viên', img: './assets/badges/bac1.png' };
 
     const hoTen = data.ho_ten || data.full_name || 'Chưa cập nhật';
     const mssvVal = data.mssv || currentMSSV;
@@ -84,7 +84,7 @@ export async function loadHoSoCaNhan() {
 
     if (document.getElementById('hs_gianhap')) document.getElementById('hs_gianhap').innerText = ngayThamGia;
     if (document.getElementById('profile-join-date')) document.getElementById('profile-join-date').innerText = ngayThamGia;
-    
+
     // Xử lý Avatar bo tròn
     const rawAvt = data.avatar || data.avatar_url || data.hinh_anh || (mssvVal ? localStorage.getItem('avatar_' + mssvVal) : '') || localStorage.getItem('userAvatar') || localStorage.getItem('currentUserAvatar');
     let avatarUrl = '';
@@ -144,7 +144,7 @@ export async function loadHoSoCaNhan() {
       // Sử dụng API tạo QR miễn phí của qrserver (kích thước 250x250)
       const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${data.mssv || mssvVal}`;
       document.getElementById('hs_qrcode').src = qrApiUrl;
-      
+
       // Chỉnh lại CSS một chút cho mã QR hiển thị vuông vắn, không bị méo
       document.getElementById('hs_qrcode').style.objectFit = 'contain';
       document.getElementById('hs_qrcode').style.backgroundColor = '#fff';
@@ -179,40 +179,48 @@ export async function loadHoSoCaNhan() {
 
     // Tính toán và hiển thị thứ hạng BXH (Leaderboard rank)
     try {
-      const client = (typeof supabase !== 'undefined' && supabase) || window.supabase;
-      if (client) {
-        const { data: allMembers } = await client
-          .from('thanh_vien')
-          .select('mssv, diem_sinh_hoat, diem_giai_dau, diem_hoat_dong, elo, sinhhoat, giaidau, hoatdong')
-          .neq('mssv', 'admin');
+      const currentCleanMSSV = String(mssvVal || currentMSSV || '').toUpperCase().trim();
+      let rankDisplay = '#--';
 
-        if (allMembers && allMembers.length > 0) {
-          const sorted = allMembers.map(m => {
-            const mSh = parseInt(m.diem_sinh_hoat ?? m.sinhhoat) || 0;
-            const mGd = parseInt(m.diem_giai_dau ?? m.giaidau) || 0;
-            const mHd = parseInt(m.diem_hoat_dong ?? m.hoatdong) || 0;
-            const mElo = parseInt(m.elo) || 0;
-            const total = mElo > 0 ? mElo : (mSh + mGd + mHd);
-            return {
-              mssv: String(m.mssv || '').toUpperCase().trim(),
-              total,
-              gd: mGd
-            };
-          }).sort((a, b) => {
-            if (b.total !== a.total) return b.total - a.total;
-            return b.gd - a.gd;
-          });
+      if (typeof window.calculateLeaderboardRank === 'function') {
+        rankDisplay = await window.calculateLeaderboardRank(currentCleanMSSV);
+      } else {
+        const client = (typeof supabase !== 'undefined' && supabase) || window.supabase;
+        if (client) {
+          const { data: allMembers } = await client
+            .from('thanh_vien')
+            .select('*')
+            .neq('mssv', 'admin');
 
-          const currentCleanMSSV = String(mssvVal || currentMSSV || '').toUpperCase().trim();
-          const rIdx = sorted.findIndex(item => item.mssv === currentCleanMSSV);
-          const rankDisplay = rIdx !== -1 ? `#${String(rIdx + 1).padStart(2, '0')}` : '#--';
+          if (allMembers && allMembers.length > 0) {
+            const sorted = allMembers.map(m => {
+              const mSh = parseInt(m.diem_sinh_hoat ?? m.sinhhoat) || 0;
+              const mGd = parseInt(m.diem_giai_dau ?? m.giaidau) || 0;
+              const mHd = parseInt(m.diem_hoat_dong ?? m.hoatdong) || 0;
+              const mElo = parseInt(m.elo) || 0;
+              const total = mElo > 0 ? mElo : (mSh + mGd + mHd);
+              return {
+                mssv: String(m.mssv || '').toUpperCase().trim(),
+                total,
+                gd: mGd
+              };
+            }).sort((a, b) => {
+              if (b.total !== a.total) return b.total - a.total;
+              return b.gd - a.gd;
+            });
 
-          const rankEl = document.getElementById('profile-leaderboard-rank');
-          if (rankEl) {
-            rankEl.innerText = rankDisplay;
+            const rIdx = sorted.findIndex(item => item.mssv === currentCleanMSSV);
+            if (rIdx !== -1) {
+              rankDisplay = `#${String(rIdx + 1).padStart(2, '0')}`;
+            }
           }
         }
       }
+
+      const rankEl = document.getElementById('profile-leaderboard-rank');
+      if (rankEl) rankEl.innerText = rankDisplay;
+      const detailRankEl = document.getElementById('detail-member-rank');
+      if (detailRankEl) detailRankEl.innerText = rankDisplay;
     } catch (rankErr) {
       console.warn('Lỗi tính thứ hạng:', rankErr);
     }
@@ -240,18 +248,18 @@ export async function loadHoSoCaNhan() {
 function spawnConfetti() {
   const colors = ['#facc15', '#f59e0b', '#0ea5e9', '#38bdf8', '#10b981', '#ec4899', '#a855f7', '#ffffff'];
   const particleCount = 45;
-  
+
   for (let i = 0; i < particleCount; i++) {
     const particle = document.createElement('div');
     particle.className = 'confetti-piece';
-    
+
     const size = Math.random() * 9 + 5;
     const isCircle = Math.random() > 0.5;
     const color = colors[Math.floor(Math.random() * colors.length)];
     const left = Math.random() * 100;
     const duration = Math.random() * 2 + 2;
     const delay = Math.random() * 0.8;
-    
+
     particle.style.cssText = `
       position: fixed;
       top: -20px;
@@ -265,9 +273,9 @@ function spawnConfetti() {
       box-shadow: 0 0 10px ${color};
       animation: confettiFall ${duration}s linear ${delay}s forwards;
     `;
-    
+
     document.body.appendChild(particle);
-    
+
     setTimeout(() => {
       if (particle && particle.parentNode) {
         particle.remove();
@@ -283,20 +291,20 @@ function playFanfare() {
     if (!AudioContext) return;
     const ctx = new AudioContext();
     const chord = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 (Triumphant fanfare)
-    
+
     chord.forEach((freq, i) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.1);
-      
+
       gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.1);
       gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + i * 0.1 + 0.05);
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.7);
-      
+
       osc.connect(gain);
       gain.connect(ctx.destination);
-      
+
       osc.start(ctx.currentTime + i * 0.1);
       osc.stop(ctx.currentTime + i * 0.1 + 0.75);
     });
@@ -308,7 +316,7 @@ function playFanfare() {
 // Hiển thị Bảng Chúc Mừng Thăng Cấp Danh Hiệu
 export function showPopupThangCap(tenMoi, imgMoi) {
   let popup = document.getElementById('popupThangCap');
-  
+
   if (!popup) {
     const isNested = window.location.pathname.includes('/pages/');
     const prefix = isNested ? '../' : './';
