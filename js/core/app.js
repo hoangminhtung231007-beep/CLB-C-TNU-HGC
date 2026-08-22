@@ -1648,8 +1648,10 @@ window.switchMainTab = function (tabId, event) {
     if (tabId === 'tin-tuc' && typeof window.loadPublicNews === 'function') {
       window.loadPublicNews();
     }
-    if (tabId === 'ho-so' && typeof window.loadPersonalProfile === 'function') {
-      window.loadPersonalProfile();
+    if (tabId === 'ho-so') {
+      if (typeof window.loadHoSoCaNhan === 'function') window.loadHoSoCaNhan();
+      else if (typeof window.loadPersonalProfile === 'function') window.loadPersonalProfile();
+      else if (typeof loadHoSoCaNhan === 'function') loadHoSoCaNhan();
     }
   } else {
     // Dự phòng cho trường hợp đang ở trang phụ ngoài index.html
@@ -2814,22 +2816,27 @@ window.syncProfileData = async function (data) {
   try {
     let client = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
     if (client) {
-      const { data: allList } = await client.from('thanh_vien').select('mssv, diem_sinh_hoat, diem_giai_dau, diem_hoat_dong').neq('mssv', 'admin');
+      const { data: allList } = await client.from('thanh_vien').select('mssv, diem_sinh_hoat, diem_giai_dau, diem_hoat_dong, elo, sinhhoat, giaidau, hoatdong').neq('mssv', 'admin');
       if (allList && allList.length > 0) {
         const sorted = allList.map(m => {
-          const mSh = parseInt(m.diem_sinh_hoat) || 0;
-          const mGd = parseInt(m.diem_giai_dau) || 0;
-          const mHd = parseInt(m.diem_hoat_dong) || 0;
-          return { mssv: String(m.mssv).toUpperCase(), total: mSh + mGd + mHd, gd: mGd };
+          const mSh = parseInt(m.diem_sinh_hoat ?? m.sinhhoat) || 0;
+          const mGd = parseInt(m.diem_giai_dau ?? m.giaidau) || 0;
+          const mHd = parseInt(m.diem_hoat_dong ?? m.hoatdong) || 0;
+          const mElo = parseInt(m.elo) || 0;
+          const total = mElo > 0 ? mElo : (mSh + mGd + mHd);
+          return { mssv: String(m.mssv || '').toUpperCase().trim(), total: total, gd: mGd };
         }).sort((a, b) => b.total === a.total ? b.gd - a.gd : b.total - a.total);
 
-        const rIdx = sorted.findIndex(item => item.mssv === String(mssv).toUpperCase());
+        const cleanMssv = String(mssv || '').toUpperCase().trim();
+        const rIdx = sorted.findIndex(item => item.mssv === cleanMssv);
         if (rIdx !== -1) {
           rankStr = `#${String(rIdx + 1).padStart(2, '0')}`;
         }
       }
     }
-  } catch (e) { }
+  } catch (e) {
+    console.warn('Lỗi tính thứ hạng syncProfileData:', e);
+  }
 
   // 1. Cập nhật Modal #modal-member-detail
   const elAvatar = document.getElementById('detail-member-avatar');
@@ -2897,6 +2904,15 @@ window.syncProfileData = async function (data) {
   if (elDiemSh) elDiemSh.innerText = String(sh);
   if (elDiemGd) elDiemGd.innerText = String(gd);
   if (elDiemHd) elDiemHd.innerText = String(hd);
+
+  const elLeaderboardRank = document.getElementById('profile-leaderboard-rank');
+  if (elLeaderboardRank) elLeaderboardRank.innerText = rankStr;
+
+  const elMembershipRankImg = document.getElementById('membership-rank');
+  if (elMembershipRankImg && badgeObj && badgeObj.img) {
+    elMembershipRankImg.src = badgeObj.img;
+    elMembershipRankImg.title = badgeObj.ten;
+  }
 };
 
 window.xemHoSo = async function (mssv) {
@@ -3084,6 +3100,15 @@ async function updateUIForLoggedInUser(user) {
     }
   } catch (e) {
     console.error("Lỗi đồng bộ thông tin UI người dùng:", e);
+  }
+
+  // Tự động tải và đồng bộ toàn bộ dữ liệu hồ sơ (Stats, Rank BXH, Danh hiệu...)
+  try {
+    if (typeof loadHoSoCaNhan === 'function') {
+      await loadHoSoCaNhan();
+    }
+  } catch (eHs) {
+    console.warn("Lỗi loadHoSoCaNhan:", eHs);
   }
 
   // Rẽ nhánh dành riêng cho Admin: chuyển hướng thẳng sang trang quản trị
