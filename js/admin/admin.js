@@ -898,55 +898,331 @@ async function saveAboutClubContent(e) {
   }
 }
 
-// Admin Stats Updater using exact count queries
-async function loadThongKeAdmin() {
+// Admin Stats Updater - Đồng bộ toàn diện dữ liệu từ Supabase
+async function loadThongKeAdmin(isManual = false) {
+    const refreshBtn = document.getElementById('btn-refresh-stats');
+    const refreshIcon = document.getElementById('icon-refresh-stats');
+    if (refreshIcon) refreshIcon.classList.add('fa-spin');
+
     try {
         const sbClient = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
-        if (!sbClient) return;
+        if (!sbClient) {
+            console.warn('[loadThongKeAdmin] Supabase client chưa sẵn sàng');
+            return;
+        }
 
-        // 1. Đếm Tổng Thành Viên (Bảng thanh_vien)
-        const { count: countTV, error: errTV } = await sbClient
+        // 1. Tải danh sách thành viên (thanh_vien) kèm ban_dieu_hanh
+        let members = [];
+        const { data: dataTV, error: errTV } = await sbClient
             .from('thanh_vien')
-            .select('*', { count: 'exact', head: true });
+            .select('*, ban_dieu_hanh(chuc_vu, trang_thai)')
+            .neq('mssv', 'admin')
+            .order('ho_ten', { ascending: true });
 
-        const countValTV = (!errTV && typeof countTV === 'number') ? countTV : 0;
-        const elTongTV = document.getElementById('statTongThanhVien') || document.getElementById('stat-total-members');
-        if (elTongTV) {
-            elTongTV.innerText = countValTV;
+        if (!errTV && dataTV) {
+            members = dataTV;
+        } else {
+            const { data: fallbackTV } = await sbClient
+                .from('thanh_vien')
+                .select('*')
+                .neq('mssv', 'admin');
+            members = fallbackTV || [];
         }
 
-        const elOnline = document.getElementById('statThanhVienOnline') || document.getElementById('stat-online-members');
-        if (elOnline) {
-            elOnline.innerText = countValTV;
-        }
+        // Tính toán thống kê thành viên
+        const totalMembers = members.length;
+        let onlineCount = 0;
+        let offlineCount = 0;
+        let maleCount = 0;
+        let femaleCount = 0;
+        let otherGenderCount = 0;
+        let totalSH = 0;
+        let totalGD = 0;
+        let totalHD = 0;
 
-        const elOffline = document.getElementById('statThanhVienOffline') || document.getElementById('stat-offline-members');
-        if (elOffline) {
-            elOffline.innerText = 0;
-        }
+        const rankCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+        const memberStatsList = [];
+
+        members.forEach(user => {
+            const mssv = user.mssv || '';
+            // Xác định Online / Offline chính xác
+            const rawStatus = user.trang_thai || user.status || (mssv ? localStorage.getItem(`status_${mssv}`) : null) || 'Offline';
+            const statusStr = String(rawStatus).trim().toLowerCase();
+            
+            const isOffline = (
+                statusStr === 'offline' ||
+                statusStr === 'không hoạt động' ||
+                statusStr === 'inactive' ||
+                statusStr === 'ngưng hoạt động' ||
+                statusStr.includes('offline') ||
+                statusStr.includes('không hoạt động')
+            );
+
+            const isOnline = !isOffline && (
+                statusStr === 'online' ||
+                statusStr === 'hoạt động' ||
+                statusStr === 'active' ||
+                statusStr === '⬢ online' ||
+                statusStr === '⬢ hoạt động' ||
+                statusStr.includes('online')
+            );
+
+            if (isOnline) {
+                onlineCount++;
+            } else {
+                offlineCount++;
+            }
+
+            // Giới tính
+            const gender = String(user.gioi_tinh || user.gender || '').trim().toLowerCase();
+            if (gender === 'nam' || gender === 'male') {
+                maleCount++;
+            } else if (gender === 'nữ' || gender === 'nu' || gender === 'female') {
+                femaleCount++;
+            } else {
+                otherGenderCount++;
+            }
+
+            // Điểm số
+            const sh = parseInt(user.diem_sinh_hoat || 0) || 0;
+            const gd = parseInt(user.diem_giai_dau || 0) || 0;
+            const hd = parseInt(user.diem_hoat_dong || 0) || 0;
+            const totalScore = sh + gd + hd;
+
+            totalSH += sh;
+            totalGD += gd;
+            totalHD += hd;
+
+            // Bậc danh hiệu (Kết hợp điểm số và chức vụ BDH)
+            let bacDiem = 1;
+            if (sh >= 115 && gd >= 12 && hd >= 15) bacDiem = 6;
+            else if (sh >= 100 && gd >= 10 && hd >= 12) bacDiem = 5;
+            else if (sh >= 60 && gd >= 5 && hd >= 8) bacDiem = 4;
+            else if (sh >= 20 && gd >= 2 && hd >= 4) bacDiem = 3;
+            else if (sh >= 8 && gd >= 1 && hd >= 2) bacDiem = 2;
+
+            let bacChucVu = 1;
+            let cv = user.chuc_vu || user.title || null;
+            if (user.ban_dieu_hanh && user.ban_dieu_hanh.length > 0) {
+                cv = user.ban_dieu_hanh[0].chuc_vu;
+                let cvLower = cv ? String(cv).toLowerCase() : '';
+                if (cvLower.includes('chủ nhiệm') && !cvLower.includes('phó')) bacChucVu = 6;
+                else if (cvLower.includes('phó chủ nhiệm')) bacChucVu = 5;
+                else if ((cvLower.includes('trưởng ban') || cvLower.includes('thư ký') || cvLower.includes('thu ky') || cvLower.includes('thư kí') || cvLower.includes('thu ki')) && !cvLower.includes('phó')) bacChucVu = 4;
+                else if (cvLower.includes('phó ban') || cvLower.includes('phó trưởng ban') || cvLower.includes('phó')) bacChucVu = 3;
+            }
+
+            const bacCuoiCung = Math.max(bacDiem, bacChucVu);
+            if (rankCounts[bacCuoiCung] !== undefined) {
+                rankCounts[bacCuoiCung]++;
+            } else {
+                rankCounts[1]++;
+            }
+
+            memberStatsList.push({
+                mssv: user.mssv,
+                ho_ten: user.ho_ten || user.full_name || user.mssv,
+                avatar: user.avatar || user.avatar_url || user.hinh_anh || (mssv ? localStorage.getItem('avatar_' + mssv) : '') || '',
+                khoa_lop: user.khoa_lop || user.class_name || '-',
+                chuc_vu: cv || 'Hội viên',
+                bacCuoiCung,
+                sh,
+                gd,
+                hd,
+                totalScore,
+                isOnline
+            });
+        });
 
         // 2. Đếm Số lượng Tin Tức (Bảng tin_tuc)
         const { count: countTin, error: errTin } = await sbClient
             .from('tin_tuc')
             .select('*', { count: 'exact', head: true });
+        const totalNews = (!errTin && typeof countTin === 'number') ? countTin : 0;
 
-        const elTin = document.getElementById('statTinTuc') || document.getElementById('stat-total-news');
-        if (elTin) {
-            elTin.innerText = (!errTin && typeof countTin === 'number') ? countTin : 0;
+        // 3. Ban Điều Hành (Bảng ban_dieu_hanh)
+        const { data: bdhData, error: errBDH } = await sbClient
+            .from('ban_dieu_hanh')
+            .select('*');
+        
+        let totalBDH = 0;
+        let duongNhiemBDH = 0;
+        let cuuBDH = 0;
+        if (!errBDH && Array.isArray(bdhData)) {
+            totalBDH = bdhData.length;
+            duongNhiemBDH = bdhData.filter(b => b.trang_thai !== 'Cựu thành viên' && !b.is_former).length;
+            cuuBDH = bdhData.filter(b => b.trang_thai === 'Cựu thành viên' || b.is_former).length;
         }
 
-        // 3. Đếm Số lượng Ban Điều Hành (Bảng ban_dieu_hanh)
-        const { count: countBDH, error: errBDH } = await sbClient
-            .from('ban_dieu_hanh')
-            .select('*', { count: 'exact', head: true });
+        // 4. Hoạt Động & Sự Kiện CLB (Bảng lich_su_hoat_dong hoặc hoat_dong)
+        let totalActivities = 0;
+        let actSinhHoat = 0;
+        let actGiaiDau = 0;
+        let actSuKien = 0;
+
+        const { data: actData, error: errAct } = await sbClient
+            .from('lich_su_hoat_dong')
+            .select('*');
+        
+        if (!errAct && Array.isArray(actData)) {
+            totalActivities = actData.length;
+            actData.forEach(act => {
+                const type = String(act.phan_loai || act.type || act.loai_hoat_dong || '').toLowerCase();
+                if (type.includes('sinh hoạt') || type.includes('sinhhoat')) actSinhHoat++;
+                else if (type.includes('giải đấu') || type.includes('giaidau')) actGiaiDau++;
+                else actSuKien++;
+            });
+        } else {
+            const { count: countFallbackAct } = await sbClient
+                .from('hoat_dong')
+                .select('*', { count: 'exact', head: true });
+            totalActivities = countFallbackAct || 0;
+        }
+
+        // Cập nhật lên UI
+        // A. 6 Card Thống kê đầu trang
+        const elTongTV = document.getElementById('statTongThanhVien') || document.getElementById('stat-total-members');
+        if (elTongTV) elTongTV.innerText = totalMembers;
+
+        const elSubTongTV = document.getElementById('statSubTongThanhVien');
+        if (elSubTongTV) elSubTongTV.innerText = `${maleCount} Nam • ${femaleCount} Nữ`;
+
+        const elOnline = document.getElementById('statThanhVienOnline') || document.getElementById('stat-online-members');
+        if (elOnline) elOnline.innerText = onlineCount;
+
+        const elSubOnline = document.getElementById('statSubThanhVienOnline');
+        if (elSubOnline) {
+            const pct = totalMembers > 0 ? Math.round((onlineCount / totalMembers) * 100) : 0;
+            elSubOnline.innerText = `${pct}% tổng hội viên`;
+        }
+
+        const elOffline = document.getElementById('statThanhVienOffline') || document.getElementById('stat-offline-members');
+        if (elOffline) elOffline.innerText = offlineCount;
+
+        const elSubOffline = document.getElementById('statSubThanhVienOffline');
+        if (elSubOffline) {
+            const pct = totalMembers > 0 ? Math.round((offlineCount / totalMembers) * 100) : 0;
+            elSubOffline.innerText = `${pct}% tổng hội viên`;
+        }
+
+        const elTin = document.getElementById('statTinTuc') || document.getElementById('stat-total-news');
+        if (elTin) elTin.innerText = totalNews;
 
         const elBDH = document.getElementById('statBanDieuHanh') || document.getElementById('stat-total-bdh');
-        if (elBDH) {
-            elBDH.innerText = (!errBDH && typeof countBDH === 'number') ? countBDH : 0;
+        if (elBDH) elBDH.innerText = totalBDH;
+
+        const elSubBDH = document.getElementById('statSubBanDieuHanh');
+        if (elSubBDH) elSubBDH.innerText = `${duongNhiemBDH} Đương nhiệm • ${cuuBDH} Cựu`;
+
+        const elHoatDong = document.getElementById('statHoatDong') || document.getElementById('stat-total-activities');
+        if (elHoatDong) elHoatDong.innerText = totalActivities;
+
+        const elSubHoatDong = document.getElementById('statSubHoatDong');
+        if (elSubHoatDong) elSubHoatDong.innerText = `${actSinhHoat} Buổi SH • ${actGiaiDau} Giải đấu`;
+
+        // B. Cập nhật Tổng Điểm CLB
+        const elTongDiemCLB = document.getElementById('statTongDiemCLB');
+        if (elTongDiemCLB) elTongDiemCLB.innerText = (totalSH + totalGD + totalHD).toLocaleString('vi-VN');
+
+        const elTongDiemSH = document.getElementById('statTongDiemSH');
+        if (elTongDiemSH) elTongDiemSH.innerText = totalSH.toLocaleString('vi-VN');
+
+        const elTongDiemGD = document.getElementById('statTongDiemGD');
+        if (elTongDiemGD) elTongDiemGD.innerText = totalGD.toLocaleString('vi-VN');
+
+        const elTongDiemHD = document.getElementById('statTongDiemHD');
+        if (elTongDiemHD) elTongDiemHD.innerText = totalHD.toLocaleString('vi-VN');
+
+        // C. Cập nhật Phân bố Danh hiệu (Bậc 1 -> Bậc 6)
+        const rankDefs = [
+            { level: 6, name: 'Bậc 6: Nòng cốt', badge: 'bac6.png', color: '#ff4b4b' },
+            { level: 5, name: 'Bậc 5: Ưu tú', badge: 'bac5.png', color: '#f59e0b' },
+            { level: 4, name: 'Bậc 4: Cốt cán', badge: 'bac4.png', color: '#a855f7' },
+            { level: 3, name: 'Bậc 3: Tích cực', badge: 'bac3.png', color: '#00d2ff' },
+            { level: 2, name: 'Bậc 2: Hội viên', badge: 'bac2.png', color: '#10b981' },
+            { level: 1, name: 'Bậc 1: Mới', badge: 'bac1.png', color: '#94a3b8' }
+        ];
+
+        const isNested = typeof window !== 'undefined' && window.location && window.location.pathname.includes('/pages/');
+        const badgeBasePath = isNested ? '../assets/badges/' : './assets/badges/';
+
+        const rankContainer = document.getElementById('stat-rank-distribution');
+        if (rankContainer) {
+            rankContainer.innerHTML = rankDefs.map(r => {
+                const count = rankCounts[r.level] || 0;
+                const pct = totalMembers > 0 ? Math.round((count / totalMembers) * 100) : 0;
+                return `
+                    <div style="margin-bottom: 14px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <img src="${badgeBasePath}${r.badge}" style="width: 22px; height: 22px; object-fit: contain;" alt="${r.name}">
+                                <span style="font-size: 13px; font-weight: 600; color: #e2e8f0;">${r.name}</span>
+                            </div>
+                            <span style="font-size: 13px; font-weight: 700; color: ${r.color};">${count} <span style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 400;">(${pct}%)</span></span>
+                        </div>
+                        <div style="width: 100%; height: 7px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden;">
+                            <div style="width: ${pct}%; height: 100%; background: ${r.color}; border-radius: 99px; transition: width 0.6s ease;"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // D. Top 5 Thành viên Cống hiến Cao nhất
+        const topLeaderboard = document.getElementById('stat-top-leaderboard');
+        if (topLeaderboard) {
+            const sortedByScore = [...memberStatsList].sort((a, b) => b.totalScore - a.totalScore).slice(0, 5);
+            if (sortedByScore.length === 0) {
+                topLeaderboard.innerHTML = '<div style="color: rgba(255,255,255,0.4); text-align: center; padding: 20px;">Chưa có dữ liệu thành viên</div>';
+            } else {
+                topLeaderboard.innerHTML = sortedByScore.map((m, idx) => {
+                    const medalEmoji = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
+                    const rawAvt = m.avatar;
+                    const avtUrl = (rawAvt && String(rawAvt).trim() !== '' && !rawAvt.includes('via.placeholder'))
+                        ? (rawAvt.includes('?') ? `${rawAvt}&t=${Date.now()}` : `${rawAvt}?t=${Date.now()}`)
+                        : `https://ui-avatars.com/api/?name=${encodeURIComponent(m.ho_ten)}&background=random&color=fff`;
+
+                    return `
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 8px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 16px; font-weight: 800; min-width: 26px; text-align: center; color: ${idx === 0 ? '#ffd700' : idx === 1 ? '#c0c0c0' : idx === 2 ? '#cd7f32' : 'rgba(255,255,255,0.5)'};">${medalEmoji}</span>
+                                <img src="${avtUrl}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" alt="${m.ho_ten}">
+                                <div>
+                                    <div style="font-size: 13px; font-weight: 600; color: #fff;">${m.ho_ten}</div>
+                                    <div style="font-size: 11px; color: rgba(255,255,255,0.5);">${m.mssv} • ${m.khoa_lop}</div>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 14px; font-weight: 800; color: #64ffda; font-family: 'Outfit', sans-serif;">${m.totalScore} pts</div>
+                                <div style="font-size: 10px; color: rgba(255,255,255,0.4);">SH:${m.sh} • GĐ:${m.gd} • HĐ:${m.hd}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // E. Cập nhật thời gian đồng bộ
+        const elLastUpdated = document.getElementById('stat-last-updated');
+        if (elLastUpdated) {
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+            elLastUpdated.innerText = `Đã đồng bộ lúc ${timeStr}`;
+        }
+
+        if (isManual) {
+            if (typeof showToast === 'function') showToast('✅ Đã đồng bộ số liệu thống kê mới nhất!', 'success');
+            else if (typeof showAdminToast === 'function') showAdminToast('✅ Đã đồng bộ số liệu thống kê mới nhất!');
         }
 
     } catch (err) {
         console.error('Lỗi khi tải thống kê:', err);
+    } finally {
+        if (refreshIcon) {
+            setTimeout(() => {
+                refreshIcon.classList.remove('fa-spin');
+            }, 500);
+        }
     }
 }
 
@@ -1096,6 +1372,9 @@ document.addEventListener('DOMContentLoaded', () => {
         loadDanhSachThanhVien();
       } else if (typeof loadAdminMembers === 'function') {
         loadAdminMembers();
+      }
+      if (typeof loadThongKeAdmin === 'function') {
+        loadThongKeAdmin();
       }
 
     } catch (error) {
@@ -1558,6 +1837,9 @@ window.loadAdminMembers = loadDanhSachThanhVien;
 
 async function capNhatTrangThai(mssv, trangThaiMoi) {
   try {
+    if (mssv) {
+      localStorage.setItem(`status_${mssv}`, trangThaiMoi);
+    }
     const { error } = await supabase
       .from('thanh_vien')
       .update({ trang_thai: trangThaiMoi })
@@ -1574,7 +1856,10 @@ async function capNhatTrangThai(mssv, trangThaiMoi) {
       } catch (e) {}
     }
 
-    loadDanhSachThanhVien();
+    await loadDanhSachThanhVien();
+    if (typeof loadThongKeAdmin === 'function') {
+      loadThongKeAdmin();
+    }
   } catch (error) {
     console.error('Lỗi cập nhật trạng thái:', error.message || error);
     alert('Lỗi: Không thể cập nhật trạng thái!');
